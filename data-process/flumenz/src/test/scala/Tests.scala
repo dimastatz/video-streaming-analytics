@@ -1,3 +1,1 @@
-object Tests {
-
-}
+object Tests {}
