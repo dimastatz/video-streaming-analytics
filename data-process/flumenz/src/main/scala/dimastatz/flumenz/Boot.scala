@@ -1,3 +1,5 @@
+package dimastatz.flumenz
+
 import org.apache.log4j.LogManager
 
 object Boot {
