@@ -52,7 +52,6 @@ val hadoopJars = ExclusionRule(organization = "org.apache.hadoop")
 libraryDependencies ++= Seq(
   "com.typesafe" % "config" % "1.3.2",
   "com.typesafe.play" %% "play-json" % "2.9.2",
-  "org.mongodb.scala" %% "mongo-scala-driver" % "2.9.0",
   "org.scalactic" %% "scalactic" % "3.2.6",
   "org.scalamock" %% "scalamock" % "5.1.0" % Test,
   "org.scalatest" %% "scalatest-funsuite" % "3.2.6" % Test,
@@ -66,8 +65,7 @@ libraryDependencies ++= Seq(
   "ch.qos.logback" % "logback-classic" % "1.2.3" % Test,
   "org.apache.logging.log4j" %% "log4j-api-scala" % "12.0",
   "org.apache.logging.log4j" % "log4j-core" % "2.13.0" % Runtime,
-  "com.github.simplyscala" %% "scalatest-embedmongo" % "0.2.4" % Test,
-  "com.github.blemale" %% "scaffeine" % "4.1.0" % Compile
+  "com.github.simplyscala" %% "scalatest-embedmongo" % "0.2.4" % Test
 )
 
 libraryDependencies ~= { _.map(_.exclude("org.slf4j", "slf4j-log4j12")) }
