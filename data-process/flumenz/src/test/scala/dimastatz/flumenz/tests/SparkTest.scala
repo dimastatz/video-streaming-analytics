@@ -6,7 +6,6 @@ import java.time.format.DateTimeFormatter
 import com.typesafe.config.{Config, ConfigFactory}
 import org.apache.spark.sql.SparkSession
 
-
 trait SparkTest {
   org.slf4j.LoggerFactory
     .getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME)
@@ -29,8 +28,11 @@ trait SparkTest {
 
   def toTimestamp(ts: String): Timestamp = {
     new Timestamp(
-      LocalDateTime.parse(ts, DateTimeFormatter.ISO_DATE_TIME)
-        .atZone(ZoneId.of("UTC")).toInstant.toEpochMilli
+      LocalDateTime
+        .parse(ts, DateTimeFormatter.ISO_DATE_TIME)
+        .atZone(ZoneId.of("UTC"))
+        .toInstant
+        .toEpochMilli
     )
   }
 }
