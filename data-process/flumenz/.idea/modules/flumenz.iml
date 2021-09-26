@@ -7,11 +7,13 @@
     <content url="file://$MODULE_DIR$/../..">
       <sourceFolder url="file://$MODULE_DIR$/../../src/main/scala" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../src/test/scala" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../src/test/resources" type="java-test-resource" />
       <excludeFolder url="file://$MODULE_DIR$/../../target" />
       <excludeFolder url="file://$MODULE_DIR$/../../target/global-logging" />
       <excludeFolder url="file://$MODULE_DIR$/../../target/scala-2.13" />
       <excludeFolder url="file://$MODULE_DIR$/../../target/streams" />
       <excludeFolder url="file://$MODULE_DIR$/../../target/task-temp-directory" />
+      <excludeFolder url="file://$MODULE_DIR$/../../target/test-reports" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -30,15 +32,12 @@
     <orderEntry type="library" name="sbt: com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.10.5:jar" level="project" />
     <orderEntry type="library" name="sbt: com.fasterxml.jackson.module:jackson-module-paranamer:2.10.0:jar" level="project" />
     <orderEntry type="library" name="sbt: com.fasterxml.jackson.module:jackson-module-scala_2.12:2.10.0:jar" level="project" />
-    <orderEntry type="library" name="sbt: com.github.ben-manes.caffeine:caffeine:2.9.1:jar" level="project" />
-    <orderEntry type="library" name="sbt: com.github.blemale:scaffeine_2.12:4.1.0:jar" level="project" />
     <orderEntry type="library" name="sbt: com.github.luben:zstd-jni:1.4.4-3:jar" level="project" />
     <orderEntry type="library" scope="TEST" name="sbt: com.github.simplyscala:scalatest-embedmongo_2.12:0.2.4:jar" level="project" />
     <orderEntry type="library" name="sbt: com.github.spotbugs:spotbugs-annotations:3.1.9:jar" level="project" />
     <orderEntry type="library" name="sbt: com.google.cloud.bigdataoss:gcs-connector:1.9.10.7.1.1.0-565:shaded:jar" level="project" />
     <orderEntry type="library" name="sbt: com.google.code.findbugs:jsr305:3.0.2:jar" level="project" />
     <orderEntry type="library" name="sbt: com.google.code.gson:gson:2.2.4:jar" level="project" />
-    <orderEntry type="library" name="sbt: com.google.errorprone:error_prone_annotations:2.5.1:jar" level="project" />
     <orderEntry type="library" name="sbt: com.google.flatbuffers:flatbuffers-java:1.9.0:jar" level="project" />
     <orderEntry type="library" name="sbt: com.google.guava:guava:16.0.1:jar" level="project" />
     <orderEntry type="library" name="sbt: com.google.inject:guice:3.0:jar" level="project" />
@@ -173,7 +172,6 @@
     <orderEntry type="library" name="sbt: org.apache.xbean:xbean-asm7-shaded:4.15:jar" level="project" />
     <orderEntry type="library" name="sbt: org.apache.yetus:audience-annotations:0.5.0:jar" level="project" />
     <orderEntry type="library" name="sbt: org.apache.zookeeper:zookeeper:3.4.14:jar" level="project" />
-    <orderEntry type="library" name="sbt: org.checkerframework:checker-qual:3.10.0:jar" level="project" />
     <orderEntry type="library" name="sbt: org.codehaus.jackson:jackson-core-asl:1.9.13:jar" level="project" />
     <orderEntry type="library" name="sbt: org.codehaus.jackson:jackson-jaxrs:1.9.13:jar" level="project" />
     <orderEntry type="library" name="sbt: org.codehaus.jackson:jackson-mapper-asl:1.9.13:jar" level="project" />
@@ -203,18 +201,12 @@
     <orderEntry type="library" name="sbt: org.json4s:json4s-jackson_2.12:3.6.6:jar" level="project" />
     <orderEntry type="library" name="sbt: org.json4s:json4s-scalap_2.12:3.6.6:jar" level="project" />
     <orderEntry type="library" name="sbt: org.lz4:lz4-java:1.7.1:jar" level="project" />
-    <orderEntry type="library" name="sbt: org.mongodb.scala:mongo-scala-bson_2.12:2.9.0:jar" level="project" />
-    <orderEntry type="library" name="sbt: org.mongodb.scala:mongo-scala-driver_2.12:2.9.0:jar" level="project" />
-    <orderEntry type="library" name="sbt: org.mongodb:bson:3.12.2:jar" level="project" />
-    <orderEntry type="library" name="sbt: org.mongodb:mongodb-driver-async:3.12.2:jar" level="project" />
-    <orderEntry type="library" name="sbt: org.mongodb:mongodb-driver-core:3.12.2:jar" level="project" />
     <orderEntry type="library" name="sbt: org.mortbay.jetty:jetty-sslengine:6.1.26:jar" level="project" />
     <orderEntry type="library" name="sbt: org.mortbay.jetty:jetty-util:6.1.26:jar" level="project" />
     <orderEntry type="library" name="sbt: org.objenesis:objenesis:2.5.1:jar" level="project" />
     <orderEntry type="library" name="sbt: org.ow2.asm:asm:5.0.4:jar" level="project" />
     <orderEntry type="library" name="sbt: org.roaringbitmap:RoaringBitmap:0.7.45:jar" level="project" />
     <orderEntry type="library" name="sbt: org.roaringbitmap:shims:0.7.45:jar" level="project" />
-    <orderEntry type="library" name="sbt: org.scala-lang.modules:scala-java8-compat_2.12:1.0.0:jar" level="project" />
     <orderEntry type="library" name="sbt: org.scala-lang.modules:scala-parser-combinators_2.12:1.1.2:jar" level="project" />
     <orderEntry type="library" name="sbt: org.scala-lang.modules:scala-xml_2.12:1.2.0:jar" level="project" />
     <orderEntry type="library" scope="TEST" name="sbt: org.scala-lang.modules:scala-xml_2.12:1.3.0:jar" level="project" />
