@@ -15,7 +15,7 @@ trait SparkTest {
   def getSession(name: String = "SparkTest"): SparkSession = {
     val session = SparkSession.builder
       .master("local[1]")
-      .appName("AdProxyTests")
+      .appName("flumenz_ap")
       .getOrCreate()
 
     session.sparkContext.setLogLevel("WARN")
