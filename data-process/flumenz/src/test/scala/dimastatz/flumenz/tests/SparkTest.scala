@@ -1,10 +1,10 @@
 package dimastatz.flumenz.tests
 
-import java.sql.Timestamp
-import java.time.{LocalDateTime, ZoneId}
-import java.time.format.DateTimeFormatter
-import com.typesafe.config.{Config, ConfigFactory}
+import java.sql._
+import java.time._
+import com.typesafe.config._
 import org.apache.spark.sql.SparkSession
+import java.time.format.DateTimeFormatter
 
 trait SparkTest {
   org.slf4j.LoggerFactory
