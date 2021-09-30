@@ -30,6 +30,8 @@ object Boot {
   }
 
   def startStream(conf: Config, head: String): Unit = {
+    import dimastatz.flumenz.utilities.Extensions._
+
     log.info("creating spark session")
     val session = SparkSession.builder.getOrCreate()
 
@@ -41,7 +43,7 @@ object Boot {
       .option("subscribe", kafkaConf.getStringList("topics").asScala.mkString(","))
       .option("kafka.bootstrap.servers", kafkaConf.getStringList("brokers").asScala.mkString(","))
       .load()
-      .select("key", "topic", "value", "timestamp")
+      .getKafkaLabels
 
     log.info("adding event listener")
 
