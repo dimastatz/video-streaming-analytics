@@ -3,7 +3,6 @@ package dimastatz.flumenz.utilities
 import org.apache.spark.sql.DataFrame
 
 object Extensions {
-
   implicit class KafkaDataFrame(df: DataFrame) {
     def getKafkaLabels: DataFrame = {
       df.selectExpr(
