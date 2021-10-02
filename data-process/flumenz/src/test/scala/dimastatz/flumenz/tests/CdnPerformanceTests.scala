@@ -1,10 +1,12 @@
 package dimastatz.flumenz.tests
 
+import scala.io.Source
 import com.typesafe.config.Config
+import dimastatz.flumenz.cdnquality.CdnQualityPipeline
+
 import scala.collection.JavaConverters._
 import org.apache.spark.sql.SparkSession
 import org.scalatest.funsuite.AnyFunSuite
-import dimastatz.flumenz.cdnquality.CdnQualityPipeline
 
 class CdnPerformanceTests extends AnyFunSuite with SparkTest {
   val config: Config = getConfig
@@ -16,10 +18,17 @@ class CdnPerformanceTests extends AnyFunSuite with SparkTest {
   }
 
   test(testName = "testCdnQualityFlow") {
-    val res = getClass.getResource("/cdn_log.json")
-    val df = session.read.json(res.getPath)
+    import session.sqlContext.implicits._
+    val lines = Source.fromResource("cdn_log.json").getLines().toList
+
+    val df = lines
+      .map(l => (toTimestamp("2021-01-01T00:20:28"), "cdnlogs", l))
+      .toDF("timestamp", "topic", "value")
+
     df.show()
-    val query = CdnQualityPipeline.query(df)
-    query.show(false)
+    assert(df.count() == 9)
+
+    val result = CdnQualityPipeline.query(df)
+    result.show()
   }
 }
