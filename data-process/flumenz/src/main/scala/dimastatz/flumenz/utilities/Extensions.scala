@@ -1,10 +1,12 @@
 package dimastatz.flumenz.utilities
 
 import org.apache.spark.sql.DataFrame
+import org.apache.spark.sql.types.{DataType, StructType}
 
 import java.sql.Timestamp
 import java.util.TimeZone
 import java.text.SimpleDateFormat
+import scala.io.BufferedSource
 
 object Extensions {
   implicit class KafkaDataFrame(df: DataFrame) {
@@ -23,6 +25,12 @@ object Extensions {
       val dateFormat = new SimpleDateFormat(pattern)
       dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"))
       dateFormat.format(ts)
+    }
+  }
+
+  implicit class BufferedSourceExtensions(bs: BufferedSource) {
+    def readSchema(): StructType = {
+      DataType.fromJson(bs.mkString).asInstanceOf[StructType]
     }
   }
 }

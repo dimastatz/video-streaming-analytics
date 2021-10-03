@@ -1,8 +1,10 @@
 package dimastatz.flumenz.cdnquality
 
+import scala.io.Source
 import java.sql.Timestamp
-import dimastatz.flumenz.Pipeline
-import org.apache.spark.sql.DataFrame
+import dimastatz.flumenz._
+import org.apache.spark.sql._
+import org.apache.spark.sql.types._
 import org.apache.spark.sql.functions._
 
 object CdnQualityPipeline extends Pipeline {
@@ -23,5 +25,10 @@ object CdnQualityPipeline extends Pipeline {
   def convertTimestamp(ts: Timestamp): String = {
     import dimastatz.flumenz.utilities.Extensions._
     ts.convertTimestamp()
+  }
+
+  def readSchema(resource: String = "schemas/cdn_ec.json"): StructType = {
+    import dimastatz.flumenz.utilities.Extensions._
+    Source.fromResource(resource).readSchema()
   }
 }

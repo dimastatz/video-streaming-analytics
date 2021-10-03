@@ -2,11 +2,10 @@ package dimastatz.flumenz.tests
 
 import scala.io.Source
 import com.typesafe.config.Config
-import dimastatz.flumenz.cdnquality.CdnQualityPipeline
-
 import scala.collection.JavaConverters._
 import org.apache.spark.sql.SparkSession
 import org.scalatest.funsuite.AnyFunSuite
+import dimastatz.flumenz.cdnquality.CdnQualityPipeline
 
 class CdnPerformanceTests extends AnyFunSuite with SparkTest {
   val config: Config = getConfig
@@ -31,4 +30,10 @@ class CdnPerformanceTests extends AnyFunSuite with SparkTest {
     val result = CdnQualityPipeline.query(df)
     result.show()
   }
+
+  test(testName = "testSchemaLoad") {
+    val schema = CdnQualityPipeline.readSchema()
+    assert(schema.fields.length == 22)
+  }
+
 }
