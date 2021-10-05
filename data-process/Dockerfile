@@ -101,7 +101,7 @@ RUN mkdir /opt/spark/conf
 COPY scripts/entrypoint.py /tmp/
 COPY flumenz/src/main/resources/*.conf /tmp/
 
-COPY --from=build /opt/input/target/scala-2.12/legion-streaming-assembly-0.2.jar  /opt/spark/jars
+COPY --from=build /opt/input/target/scala-2.12/flumenz-assembly-0.1.jar  /opt/spark/jars
 
 WORKDIR /opt/spark/work-dir
 RUN wget https://archive.apache.org/dist/kafka/2.2.1/kafka_2.12-2.2.1.tgz
