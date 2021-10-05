@@ -1,5 +1,6 @@
 package dimastatz.flumenz
 
+import dimastatz.flumenz.cdnquality.CdnQualityPipeline
 import org.apache.spark.sql._
 
 trait Pipeline {
@@ -9,5 +10,9 @@ trait Pipeline {
 }
 
 object Pipelines {
-  def create(): Seq[Pipeline] = ???
+  def create(topic: Seq[String]): Seq[Pipeline] = {
+    topic map {
+      case "cdn" => CdnQualityPipeline
+    }
+  }
 }

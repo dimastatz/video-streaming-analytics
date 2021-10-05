@@ -48,7 +48,7 @@ object Boot {
     log.info("adding event listener")
 
     Pipelines
-      .create()
+      .create(kafkaConf.getStringList("topics").asScala.toList)
       .foreach(p => {
         p.query(df)
           .writeStream
