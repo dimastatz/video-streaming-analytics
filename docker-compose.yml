@@ -1,0 +1,16 @@
+version: '2'
+
+networks:
+  video-streaming-network:
+    driver: bridge
+
+services:
+  data-process:
+    build: ./data-process 
+    hostname: data-process
+    container_name: data-process
+    volumes:
+      - ./tmp/e2e/:/tmp/kafka
+    networks:
+      - video-streaming-network
+
