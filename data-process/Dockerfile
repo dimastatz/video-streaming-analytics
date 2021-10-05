@@ -49,17 +49,17 @@ echo "done with wget"
 WORKDIR /opt/input
 
 # Project Definition layers change less often than application code
-COPY app/build.sbt ./
+COPY flumenz/build.sbt ./
 WORKDIR /opt/input/project
 # COPY project/*.scala ./
-COPY app/project/build.properties ./
-COPY app/project/*.sbt ./
+COPY flumenz/project/build.properties ./
+COPY flumenz/project/*.sbt ./
 
 WORKDIR /opt/input
 RUN sbt reload
 
 # Copy rest of application
-COPY app ./
+COPY flumenz ./
 RUN sbt testCoverage
 RUN SBT_OPTS="-Xms2048M -Xmx2048M -Xss1024M -XX:MaxMetaspaceSize=4096M" sbt 'set test in assembly := {}' clean assembly
 
@@ -98,16 +98,7 @@ RUN mv ./kubectl /usr/local/bin
 ENV SPARK_HOME /opt/spark
 RUN mkdir /opt/spark/conf
 
-COPY scripts/entrypoint.py /tmp/
-COPY app/src/main/resources/*.conf /tmp/
-COPY app/src/main/resources/spark/*.properties /tmp/
-
-COPY app/src/main/resources/spark/log4j.properties /opt/spark/conf/
-COPY app/src/main/resources/spark/metrics.properties /opt/spark/conf/
-COPY app/src/main/resources/spark/spark-defaults.conf /opt/spark/conf/
-
-COPY app/src/main/resources/wurfl/wurfl.xml.gz /opt/spark/conf/wurfl.xml.gz
-COPY app/src/main/resources/data/domains_to_partners.csv /opt/spark/conf/domains_to_partners.csv
+COPY flumenz/src/main/resources/*.conf /tmp/
 
 COPY --from=build /opt/input/target/scala-2.12/legion-streaming-assembly-0.2.jar  /opt/spark/jars
 
