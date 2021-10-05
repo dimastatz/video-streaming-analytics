@@ -98,6 +98,7 @@ RUN mv ./kubectl /usr/local/bin
 ENV SPARK_HOME /opt/spark
 RUN mkdir /opt/spark/conf
 
+COPY scripts/entrypoint.py /tmp/
 COPY flumenz/src/main/resources/*.conf /tmp/
 
 COPY --from=build /opt/input/target/scala-2.12/legion-streaming-assembly-0.2.jar  /opt/spark/jars
