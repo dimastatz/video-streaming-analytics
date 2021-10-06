@@ -12,20 +12,13 @@ logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
 
 def create_cmd(conf: ConfigFactory, env: str) -> str:
-    return '{} {} {} {} {} {} {}'.format(
+    return '{} {} {} {} {} {}'.format(
         '/opt/spark/bin/spark-submit', 
-        ' '.join(conf.get('legion-streaming.spark.args')), 
-        ' '.join(conf.get('legion-streaming.spark.conf')), 
-        ' '.join(conf.get('legion-streaming.spark.kubernetes')),
-        ' '.join(get_secrets(os.environ)),
-        conf.get('legion-streaming.spark.assembly'), env)
+        ' '.join(conf.get('conf.spark.args')), 
+        ' '.join(conf.get('conf.spark.conf')), 
+        ' '.join(conf.get('conf.spark.kubernetes')),
+        conf.get('conf.spark.assembly'), env)
 
-
-def get_secrets(env: dict):
-    return [        
-        '--conf spark.kubernetes.driverEnv.MONGO_USER={}'.format(env['MONGO_USER']),
-        '--conf spark.kubernetes.driverEnv.MONGO_SECRET={}'.format(env['MONGO_SECRET'])
-    ]
 
 def load_conf(env: str):
     path = '/tmp/{}.conf'.format(env)
@@ -99,7 +92,7 @@ if __name__ == "__main__":
         cmd = create_cmd(conf, env)
         ns = '-'.join(os.environ['HOSTNAME'].split('-')[:3])
 
-        args = conf.get('legion-streaming.spark.args')
+        args = conf.get('conf.spark.args')
         master = [x.split(' ')[1] for x in args if 'master' in x][0]
         master = master.split('k8s://')[1] if 'k8s://' in master else master
         

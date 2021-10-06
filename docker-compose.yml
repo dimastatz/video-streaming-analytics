@@ -10,7 +10,7 @@ services:
     hostname: data-process
     container_name: data-process
     volumes:
-      - ./tmp/e2e/:/tmp/kafka
+      - /tmp/e2e/:/tmp/kafka
     networks:
       - video-streaming-network
 
