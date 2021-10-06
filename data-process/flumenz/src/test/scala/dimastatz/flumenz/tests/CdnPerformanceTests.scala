@@ -1,15 +1,13 @@
 package dimastatz.flumenz.tests
 
+import java.util.UUID
 import scala.io.Source
 import org.apache.spark.sql._
 import com.typesafe.config.Config
-
 import scala.collection.JavaConverters._
 import org.scalatest.funsuite.AnyFunSuite
 import dimastatz.flumenz.{Pipeline, Pipelines}
 import dimastatz.flumenz.cdnquality.CdnQualityPipeline
-
-import java.util.UUID
 
 class CdnPerformanceTests extends AnyFunSuite with SparkTest {
   val config: Config = getConfig
@@ -45,7 +43,7 @@ class CdnPerformanceTests extends AnyFunSuite with SparkTest {
   }
 
   test(testName = "testPipelineCreate") {
-    val res = Pipelines.create(List("cdn"))
+    val res = Pipelines.create(List("cdnlogs"))
     assert(res.length == 1)
 
     val dummy = new {} with Pipeline {

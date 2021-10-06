@@ -12,7 +12,7 @@ trait Pipeline {
 object Pipelines {
   def create(topic: Seq[String]): Seq[Pipeline] = {
     topic map {
-      case "cdn" => CdnQualityPipeline
+      case "cdnlogs" => CdnQualityPipeline
     }
   }
 }
