@@ -37,6 +37,7 @@ object Boot {
 
     log.info("starting kafka stream")
     val kafkaConf = conf.getConfig("conf.spark.kafka")
+
     val df = session.readStream
       .format("kafka")
       .option("maxOffsetsPerTrigger", kafkaConf.getInt("maxOffsetsPerTrigger"))
@@ -46,6 +47,7 @@ object Boot {
       .getKafkaLabels
 
     log.info("adding event listener")
+    val sparkConf = conf.getConfig("conf.spark")
 
     Pipelines
       .create(kafkaConf.getStringList("topics").asScala.toList)
@@ -57,8 +59,8 @@ object Boot {
           .partitionBy(p.getPartitions: _*)
           .outputMode("append")
           .queryName(s"${p.getName}_${p.getName}")
-          .option("path", s"${kafkaConf.getString("sink")}/${p.getName}/")
-          .option("checkpointLocation", s"${kafkaConf.getString("checkpoint")}/${p.getName}/")
+          .option("path", s"${sparkConf.getString("sink")}/${p.getName}/")
+          .option("checkpointLocation", s"${sparkConf.getString("checkpoint")}/${p.getName}/")
           .start()
       })
 
