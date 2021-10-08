@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="sbt: org.apache.hadoop:hadoop-azure:3.1.1.7.2.1.0-321:jar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/Library/Caches/Coursier/v1/https/repository.cloudera.com/artifactory/cloudera-repos/org/apache/hadoop/hadoop-azure/3.1.1.7.2.1.0-321/hadoop-azure-3.1.1.7.2.1.0-321.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/Library/Caches/Coursier/v1/https/repository.cloudera.com/artifactory/cloudera-repos/org/apache/hadoop/hadoop-azure/3.1.1.7.2.1.0-321/hadoop-azure-3.1.1.7.2.1.0-321-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

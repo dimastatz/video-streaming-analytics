@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="sbt: com.google.cloud.bigdataoss:gcs-connector:1.9.10.7.1.1.0-565:shaded:jar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/Library/Caches/Coursier/v1/https/repository.cloudera.com/artifactory/cloudera-repos/com/google/cloud/bigdataoss/gcs-connector/1.9.10.7.1.1.0-565/gcs-connector-1.9.10.7.1.1.0-565-shaded.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
