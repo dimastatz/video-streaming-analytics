@@ -17,12 +17,9 @@ services:
       - postgres
       - webserver
     env_file:
-      - ./data-process/orchestration/scripts/.env
+      - ./data-process/orchestration/airflow/.env
     ports:
       - "8793:8793"
-    volumes:
-      - ./dags:/opt/airflow/dags
-      - ./airflow-logs:/opt/airflow/logs
     command: scheduler
     healthcheck:
       test: ["CMD-SHELL", "[ -f /usr/local/airflow/airflow-webserver.pid ]"]
@@ -31,20 +28,16 @@ services:
       retries: 3
 
   webserver:
-    image: ./data-process/orchestration
+    build: ./data-process/orchestration
     hostname: webserver
     restart: always
     depends_on:
       - postgres
     env_file:
-      - ./data-process/orchestration/scripts/.env
-    volumes:
-      - ./dags:/opt/airflow/dags
-      - ./scripts:/opt/airflow/scripts
-      - ./airflow-logs:/opt/airflow/logs
+      - ./data-process/orchestration/airflow/.env
     ports:
       - "8080:8080"
-    entrypoint: ./scripts/airflow-entrypoint.sh
+    entrypoint: ./scripts/entrypoint.sh
     healthcheck:
       test: ["CMD-SHELL", "[ -f /usr/local/airflow/airflow-webserver.pid ]"]
       interval: 30s
