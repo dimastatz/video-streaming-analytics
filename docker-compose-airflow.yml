@@ -10,14 +10,14 @@ services:
     ports:
       - "5433:5432"
 
-scheduler:
-    image: apache/airflow
+  scheduler:
+    build: ./data-process/orchestration
     restart: always
     depends_on:
       - postgres
       - webserver
     env_file:
-      - .env
+      - ./data-process/orchestration/scripts/.env
     ports:
       - "8793:8793"
     volumes:
@@ -30,14 +30,14 @@ scheduler:
       timeout: 30s
       retries: 3
 
-webserver:
-    image: apache/airflow
+  webserver:
+    image: ./data-process/orchestration
     hostname: webserver
     restart: always
     depends_on:
       - postgres
     env_file:
-      - .env
+      - ./data-process/orchestration/scripts/.env
     volumes:
       - ./dags:/opt/airflow/dags
       - ./scripts:/opt/airflow/scripts
