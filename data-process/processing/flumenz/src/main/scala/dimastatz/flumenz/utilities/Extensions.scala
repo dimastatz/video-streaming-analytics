@@ -1,14 +1,12 @@
 package dimastatz.flumenz.utilities
 
-import org.apache.commons.lang.StringEscapeUtils
-
 import java.sql.Timestamp
 import java.util.TimeZone
 import org.apache.spark.sql._
-import org.apache.spark.sql.types._
-
 import scala.io.BufferedSource
 import java.text.SimpleDateFormat
+import org.apache.spark.sql.types._
+import org.apache.commons.lang.StringEscapeUtils
 
 object Extensions {
   implicit class KafkaDataFrame(df: DataFrame) {

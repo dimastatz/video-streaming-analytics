@@ -13,8 +13,10 @@ object CdnQualityPipeline extends Pipeline {
   override def getPartitions: List[String] = List("exec_dt")
 
   override def query(df: DataFrame): DataFrame = {
+    val schema = readSchema()
     val convertedTimestampUdf = udf(convertTimestamp _)
     val unpackJsonBatchUdf = udf(unpackJsonBatch _)
+
     df
       .select("timestamp", "value", "topic")
       .filter(col("topic") === "cdnlogs")
@@ -23,6 +25,7 @@ object CdnQualityPipeline extends Pipeline {
       .drop("timestamp")
       .withColumn("value", unpackJsonBatchUdf(col("value")))
       .withColumn("value", explode(col("value")))
+      .withColumn("value", from_json(col("value"), schema))
   }
 
   def unpackJsonBatch(json: String): Array[String] = {
