@@ -32,4 +32,31 @@ object Extensions {
       DataType.fromJson(bs.mkString).asInstanceOf[StructType]
     }
   }
+
+  implicit class JsonBatch(json: String) {
+    case class State(
+        counter: Int = 0,
+        parts: List[String] = List(),
+        acc: String = ""
+    )
+
+    def parse: Array[String] = {
+      val res = json.foldLeft(State())((state, c) =>
+        c match {
+          case '{' => State(state.counter + 1, state.parts, state.acc + c)
+          case '}' =>
+            state.counter match {
+              case x if x > 1 => State(state.counter - 1, state.parts, state.acc + c)
+              case _          => State(0, state.parts ++ List(state.acc + c))
+            }
+          case _ =>
+            state.acc match {
+              case x if x.isEmpty => State(state.counter, state.parts ++ List(c.toString))
+              case _              => State(state.counter, state.parts, state.acc + c)
+            }
+        }
+      )
+      res.parts.filter(i => i.startsWith("{") && i.endsWith("}")).toArray
+    }
+  }
 }

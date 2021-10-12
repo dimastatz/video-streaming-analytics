@@ -14,12 +14,20 @@ object CdnQualityPipeline extends Pipeline {
 
   override def query(df: DataFrame): DataFrame = {
     val convertedTimestampUdf = udf(convertTimestamp _)
+    val unpackJsonBatchUdf = udf(unpackJsonBatch _)
     df
       .select("timestamp", "value", "topic")
       .filter(col("topic") === "cdnlogs")
       .select("value", "timestamp")
       .withColumn("exec_dt", convertedTimestampUdf(col("timestamp")))
       .drop("timestamp")
+      .withColumn("value", unpackJsonBatchUdf(col("value")))
+      .withColumn("value", explode(col("value")))
+  }
+
+  def unpackJsonBatch(json: String): Array[String] = {
+    import dimastatz.flumenz.utilities.Extensions._
+    json.parse
   }
 
   def convertTimestamp(ts: Timestamp): String = {
