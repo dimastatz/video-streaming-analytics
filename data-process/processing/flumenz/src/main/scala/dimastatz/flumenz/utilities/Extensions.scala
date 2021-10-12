@@ -1,9 +1,12 @@
 package dimastatz.flumenz.utilities
 
+import org.apache.commons.lang.StringEscapeUtils
+
 import java.sql.Timestamp
 import java.util.TimeZone
 import org.apache.spark.sql._
 import org.apache.spark.sql.types._
+
 import scala.io.BufferedSource
 import java.text.SimpleDateFormat
 
@@ -41,7 +44,9 @@ object Extensions {
     )
 
     def parse: Array[String] = {
-      val res = json.foldLeft(State())((state, c) =>
+      val text = StringEscapeUtils.unescapeJava(json)
+
+      val res = text.foldLeft(State())((state, c) =>
         c match {
           case '{' => State(state.counter + 1, state.parts, state.acc + c)
           case '}' =>

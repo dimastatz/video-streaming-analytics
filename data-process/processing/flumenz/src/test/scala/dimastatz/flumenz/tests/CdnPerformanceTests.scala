@@ -34,7 +34,7 @@ class CdnPerformanceTests extends AnyFunSuite with SparkTest {
     assert(CdnQualityPipeline.getPartitions.contains("exec_dt"))
 
     val result = CdnQualityPipeline.query(df)
-    result.show()
+    assert(result.count() == 9)
   }
 
   test(testName = "testBatchCdnQualityFlow") {
@@ -53,6 +53,7 @@ class CdnPerformanceTests extends AnyFunSuite with SparkTest {
 
     val result = CdnQualityPipeline.query(df)
     assert(result.count() == 9)
+    result.show()
   }
 
   test(testName = "testSchemaLoad") {
