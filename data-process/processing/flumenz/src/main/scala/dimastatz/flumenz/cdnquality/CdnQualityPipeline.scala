@@ -30,7 +30,7 @@ object CdnQualityPipeline extends Pipeline {
 
   def unpackJsonBatch(json: String): Array[String] = {
     import dimastatz.flumenz.utilities.Extensions._
-    json.parse
+    json.parseJsonBatch
   }
 
   def convertTimestamp(ts: Timestamp): String = {
