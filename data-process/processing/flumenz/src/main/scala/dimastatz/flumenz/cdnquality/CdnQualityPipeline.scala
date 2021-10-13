@@ -13,7 +13,9 @@ object CdnQualityPipeline extends Pipeline {
   override def getPartitions: List[String] = List("exec_dt")
 
   override def query(df: DataFrame): DataFrame = {
-    val schema = readSchema()
+    val schema = readSchema().add(
+      StructField("exec_dt", dataType = StringType, nullable = false))
+
     val convertedTimestampUdf = udf(convertTimestamp _)
     val unpackJsonBatchUdf = udf(unpackJsonBatch _)
 
@@ -26,6 +28,7 @@ object CdnQualityPipeline extends Pipeline {
       .withColumn("value", unpackJsonBatchUdf(col("value")))
       .withColumn("value", explode(col("value")))
       .withColumn("value", from_json(col("value"), schema))
+      .select(col("value.*"), col("exec_dt"))
   }
 
   def unpackJsonBatch(json: String): Array[String] = {
