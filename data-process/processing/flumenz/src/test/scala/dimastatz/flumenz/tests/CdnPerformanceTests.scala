@@ -4,10 +4,12 @@ import java.util.UUID
 import scala.io.Source
 import org.apache.spark.sql._
 import com.typesafe.config.Config
+
 import scala.collection.JavaConverters._
 import org.scalatest.funsuite.AnyFunSuite
 import dimastatz.flumenz.{Pipeline, Pipelines}
 import dimastatz.flumenz.cdnquality.CdnQualityPipeline
+import play.api.libs.json.Json
 
 class CdnPerformanceTests extends AnyFunSuite with SparkTest {
   val config: Config = getConfig
@@ -74,5 +76,14 @@ class CdnPerformanceTests extends AnyFunSuite with SparkTest {
     }
 
     assert(dummy.getName == "dummy" && dummy.getPartitions.contains("dummy"))
+  }
+
+  test(testName = "testBatchParse") {
+    import dimastatz.flumenz.utilities.Extensions._
+    val content = Source.fromResource("cdn_log_batch.json")
+    val result = content.mkString.parseJsonBatch
+    assert(result.length == 9)
+    val jsonArray = result.map(Json.parse)
+    assert(jsonArray.length == 9)
   }
 }
