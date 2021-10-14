@@ -20,14 +20,13 @@ object CdnQualityPipeline extends Pipeline {
     df
       .select("timestamp", "value", "topic")
       .filter(col("topic") === "cdnlogs")
-      .select("value", "timestamp")
-      .withColumn("exec_dt", convertedTimestampUdf(col("timestamp")))
-      .drop("timestamp")
+      .withColumn("exec_dt", convertedTimestampUdf(col("timestamp"), lit("yyyyMMddHH")))
+      .withColumn("exec_dt_min", convertedTimestampUdf(col("timestamp"), lit("yyyyMMddHHmm")))
       .withColumn("value", unpackJsonBatchUdf(col("value")))
       .withColumn("value", explode(col("value")))
       .withColumn("value", from_json(col("value"), schema))
-      .select(col("value.*"), col("exec_dt"))
-      .select(col("exec_dt"), col("rewritten_path"), col("status_code"))
+      .select(col("value.*"), col("exec_dt"), col("exec_dt_min"))
+      .select("exec_dt", "exec_dt_min", "timestamp", "rewritten_path", "status_code", "write_time", "pop")
       .filter(col("status_code").isNotNull)
   }
 
@@ -36,9 +35,9 @@ object CdnQualityPipeline extends Pipeline {
     json.parseJsonBatch
   }
 
-  def convertTimestamp(ts: Timestamp): String = {
+  def convertTimestamp(ts: Timestamp, pattern: String): String = {
     import dimastatz.flumenz.utilities.Extensions._
-    ts.convertTimestamp()
+    ts.convertTimestamp(pattern)
   }
 
   def readSchema(resource: String = "schemas/cdn_ec.json"): StructType = {
