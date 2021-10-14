@@ -28,6 +28,7 @@ object CdnQualityPipeline extends Pipeline {
       .withColumn("value", from_json(col("value"), schema))
       .select(col("value.*"), col("exec_dt"))
       .select(col("rewritten_path"), col("status_code"))
+      .filter(col("status_code").isNotNull)
   }
 
   def unpackJsonBatch(json: String): Array[String] = {
