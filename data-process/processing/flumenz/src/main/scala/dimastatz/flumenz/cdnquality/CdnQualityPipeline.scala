@@ -15,7 +15,7 @@ object CdnQualityPipeline extends Pipeline {
   override def query(df: DataFrame): DataFrame = {
     val unpackJsonBatchUdf = udf(unpackJsonBatch _)
     val convertedTimestampUdf = udf(convertTimestamp _)
-    val schema = readSchema().add(StructField("exec_dt", dataType = StringType, nullable = false))
+    val schema = readSchema()
 
     df
       .select("timestamp", "value", "topic")
@@ -27,7 +27,7 @@ object CdnQualityPipeline extends Pipeline {
       .withColumn("value", explode(col("value")))
       .withColumn("value", from_json(col("value"), schema))
       .select(col("value.*"), col("exec_dt"))
-      .select(col("rewritten_path"), col("status_code"))
+      .select(col("exec_dt"), col("rewritten_path"), col("status_code"))
       .filter(col("status_code").isNotNull)
   }
 
