@@ -2,6 +2,10 @@ package dimastatz.flumenz.utilities
 
 import scala.util._
 
+/*
+Parsing Edgecast logs. For fields description see:
+https://docs.edgecast.com/cdn/Content/RTLD/Log-Fields.htm
+ */
 object Edgecast {
   implicit class Path(path: String) {
     def getOwnerId: Try[String] = getPathPart()
