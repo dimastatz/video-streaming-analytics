@@ -4,15 +4,14 @@ import scala.util._
 
 object Edgecast {
   implicit class Path(path: String) {
+    def getOwnerId: Try[String] = getPathPart()
     def getBeamId: Try[String] = getPathPart(1)
-    def getOwnerId: Try[String] = getPathPart(2)
 
-    def getPathPart(index: Int): Try[String] = {
-      (path.contains("slices"), path.split("/")) match {
-        case (_, x) if x.contains("static") => Failure(new Exception("Static content"))
-        case (true, x)                      => Try(x.reverse(index))
-        case (false, _)                     => Failure(new Exception("Slice not found"))
+    def getPathPart(index: Int = 0): Try[String] =
+      Try {
+        val pattern = "/[0-9a-fA-F]{32}/[0-9a-fA-F]{32}/".r
+        val groups = pattern.findAllIn(path.split("/slices")(1))
+        groups.toList.head.split("/")(index + 1)
       }
-    }
   }
 }

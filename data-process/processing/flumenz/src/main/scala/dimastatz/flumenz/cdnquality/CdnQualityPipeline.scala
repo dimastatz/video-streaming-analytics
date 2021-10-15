@@ -29,6 +29,7 @@ object CdnQualityPipeline extends Pipeline {
       .select("exec_dt", "timestamp", "rewritten_path", "status_code", "write_time", "pop")
       .filter(col("status_code").isNotNull && col("rewritten_path").isNotNull)
       .withColumn("owner_id", getOwnerUdf(col("rewritten_path")))
+      .drop("rewritten_path")
 
     result
   }
