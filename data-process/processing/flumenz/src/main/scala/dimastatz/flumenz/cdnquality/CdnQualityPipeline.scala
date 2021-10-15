@@ -13,9 +13,10 @@ object CdnQualityPipeline extends Pipeline {
   override def getPartitions: List[String] = List("exec_dt")
 
   override def query(df: DataFrame): DataFrame = {
+    val schema = readSchema()
+    val getOwnerUdf = udf(getOwner _)
     val unpackJsonBatchUdf = udf(unpackJsonBatch _)
     val convertedTimestampUdf = udf(convertTimestamp _)
-    val schema = readSchema()
 
     val result = df
       .select("timestamp", "value", "topic")
@@ -26,14 +27,15 @@ object CdnQualityPipeline extends Pipeline {
       .withColumn("value", from_json(col("value"), schema))
       .select(col("value.*"), col("exec_dt"))
       .select("exec_dt", "timestamp", "rewritten_path", "status_code", "write_time", "pop")
-      .filter(col("status_code").isNotNull)
+      .filter(col("status_code").isNotNull && col("rewritten_path").isNotNull)
+      .withColumn("owner_id", getOwnerUdf(col("rewritten_path")))
 
     result
   }
 
   def getOwner(rewrittenPath: String): String = {
-    val pattern = ".*(/slices/)([A-Za-z0-9]+/)([A-Za-z0-9]+/)([A-Za-z0-9]+/).*".r
-    pattern.findAllIn(rewrittenPath).group(3)
+    import dimastatz.flumenz.utilities.Edgecast._
+    rewrittenPath.getOwnerId.getOrElse("")
   }
 
   def unpackJsonBatch(json: String): Array[String] = {

@@ -9,8 +9,9 @@ object Edgecast {
 
     def getPathPart(index: Int): Try[String] = {
       (path.contains("slices"), path.split("/")) match {
-        case (true, x)  => Try(x.reverse(index))
-        case (false, _) => Failure(new Exception("Slice not found"))
+        case (_, x) if x.contains("static") => Failure(new Exception("Static content"))
+        case (true, x)                      => Try(x.reverse(index))
+        case (false, _)                     => Failure(new Exception("Slice not found"))
       }
     }
   }

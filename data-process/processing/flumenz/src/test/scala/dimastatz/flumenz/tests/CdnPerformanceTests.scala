@@ -114,5 +114,6 @@ class CdnPerformanceTests extends AnyFunSuite with SparkTest {
     assert(path1.getBeamId.get == "0cea2f39d0f04125ad16ba6f420e6920")
     assert(path1.getOwnerId.get == "e6cf0c55dac249f0a0f72e7c72e6f6cb")
     assert("/80C078/origin-default/ichnaea/u.js".getOwnerId.isFailure)
+    assert("/80C078/origin-ausw2/slices/static/static.vtt".getOwnerId.isFailure)
   }
 }
