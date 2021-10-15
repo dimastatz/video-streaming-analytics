@@ -17,17 +17,23 @@ object CdnQualityPipeline extends Pipeline {
     val convertedTimestampUdf = udf(convertTimestamp _)
     val schema = readSchema()
 
-    df
+    val result = df
       .select("timestamp", "value", "topic")
       .filter(col("topic") === "cdnlogs")
       .withColumn("exec_dt", convertedTimestampUdf(col("timestamp"), lit("yyyyMMddHH")))
-      .withColumn("exec_dt_min", convertedTimestampUdf(col("timestamp"), lit("yyyyMMddHHmm")))
       .withColumn("value", unpackJsonBatchUdf(col("value")))
       .withColumn("value", explode(col("value")))
       .withColumn("value", from_json(col("value"), schema))
-      .select(col("value.*"), col("exec_dt"), col("exec_dt_min"))
-      .select("exec_dt", "exec_dt_min", "timestamp", "rewritten_path", "status_code", "write_time", "pop")
+      .select(col("value.*"), col("exec_dt"))
+      .select("exec_dt", "timestamp", "rewritten_path", "status_code", "write_time", "pop")
       .filter(col("status_code").isNotNull)
+
+    result
+  }
+
+  def getOwner(rewrittenPath: String): String = {
+    val pattern = ".*(/slices/)([A-Za-z0-9]+/)([A-Za-z0-9]+/)([A-Za-z0-9]+/).*".r
+    pattern.findAllIn(rewrittenPath).group(3)
   }
 
   def unpackJsonBatch(json: String): Array[String] = {

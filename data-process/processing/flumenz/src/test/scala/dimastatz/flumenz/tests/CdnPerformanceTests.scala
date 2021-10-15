@@ -103,7 +103,16 @@ class CdnPerformanceTests extends AnyFunSuite with SparkTest {
     val result = CdnQualityPipeline.query(df)
     assert(result.count() == 8)
     result.printSchema()
-    result.show()
+    result.show(false)
   }
 
+  test(testName = "testOwnerExtraction") {
+    import dimastatz.flumenz.utilities.Edgecast._
+    val path1 = "/80C078/origin-ausw2/slices/0ce/" +
+      "e6cf0c55dac249f0a0f72e7c72e6f6cb/0cea2f39d0f04125ad16ba6f420e6920/FP_IFO0100000069.ts"
+
+    assert(path1.getBeamId.get == "0cea2f39d0f04125ad16ba6f420e6920")
+    assert(path1.getOwnerId.get == "e6cf0c55dac249f0a0f72e7c72e6f6cb")
+    assert("/80C078/origin-default/ichnaea/u.js".getOwnerId.isFailure)
+  }
 }
