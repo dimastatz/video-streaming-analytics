@@ -26,13 +26,12 @@ object CdnQualityPipeline extends Pipeline {
       .withColumn("value", unpackJsonBatchUdf(col("value")))
       .withColumn("value", explode(col("value")))
       .withColumn("value", from_json(col("value"), schema))
+      .filter(col("value.status_code").isNotNull)
       .select(col("value.*"), col("exec_dt"))
-      .select("exec_dt", "timestamp", "rewritten_path", "status_code", "write_time", "pop")
       .withColumn("dt", convertUnixTimeUdf(col("timestamp")))
-      .filter(col("status_code").isNotNull && col("rewritten_path").isNotNull)
       .withColumn("owner_id", getOwnerUdf(col("rewritten_path")))
-      .drop("rewritten_path")
-
+      .select("exec_dt", "dt", "owner_id", "pop", "status_code", "write_time")
+    
     result
   }
 
