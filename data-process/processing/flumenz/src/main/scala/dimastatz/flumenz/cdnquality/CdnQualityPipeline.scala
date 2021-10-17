@@ -31,7 +31,7 @@ object CdnQualityPipeline extends Pipeline {
       .withColumn("dt", convertUnixTimeUdf(col("timestamp")))
       .withColumn("owner_id", getOwnerUdf(col("rewritten_path")))
       .select("exec_dt", "dt", "owner_id", "pop", "status_code", "write_time")
-    
+
     result
   }
 

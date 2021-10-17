@@ -3,8 +3,15 @@ package dimastatz.flumenz
 import scala.util._
 import org.apache.log4j._
 import com.typesafe.config._
-import org.apache.spark.sql.SparkSession
+import dimastatz.flumenz.utilities.KafkaExtensions
+import dimastatz.flumenz.utilities.KafkaExtensions.createKafkaConsumer
+
+import scala.collection.mutable
 import scala.collection.JavaConverters._
+import org.apache.spark.sql.SparkSession
+import org.apache.kafka.clients.consumer.KafkaConsumer
+import org.apache.spark.sql.streaming.StreamingQueryListener
+import org.apache.spark.sql.streaming.StreamingQueryListener._
 
 object Boot {
   private lazy val log = LogManager.getLogger(Boot.getClass)
@@ -65,5 +72,28 @@ object Boot {
       })
 
     session.streams.awaitAnyTermination()
+  }
+
+  class EventCollector(servers: String, topic: String) extends StreamingQueryListener {
+    private val oMap = KafkaExtensions.createScalaObjectMapper
+    private val cMap = mutable.Map[String, KafkaConsumer[String, String]]()
+
+    override def onQueryProgress(event: QueryProgressEvent): Unit = {
+      import event.progress._
+      cMap.getOrElseUpdate(name, createKafkaConsumer(servers, name))
+
+      KafkaExtensions.commitOffsets(oMap, sources.head.endOffset, topic, cMap(name)) match {
+        case Success(_) => log.info(s"QueryProgress committed $json offsets")
+        case Failure(e) => log.error(s"QueryProgress failed $json $e to commit offsets")
+      }
+    }
+
+    override def onQueryStarted(event: QueryStartedEvent): Unit = {
+      log.info(s"QueryStarted ${event.name} ${event.timestamp}")
+    }
+
+    override def onQueryTerminated(event: QueryTerminatedEvent): Unit = {
+      log.error(s"QueryTerminated ${event.id} ${event.exception}")
+    }
   }
 }
