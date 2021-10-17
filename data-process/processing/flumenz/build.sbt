@@ -36,7 +36,7 @@ testScalastyle := (Test / scalastyle).toTask("").value
 ThisBuild / scalafmtOnCompile := true
 coverageMinimum := 90
 coverageFailOnMinimum := true
-coverageExcludedFiles := ".*Boot.*;.*MongoRunner.*;.*MongoCacheRunner.*"
+coverageExcludedFiles := ".*Boot.*;.*KafkaExtensions.commitOffsets"
 
 scalacOptions ++= Seq(
   "-deprecation",
