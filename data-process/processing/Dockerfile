@@ -101,6 +101,8 @@ RUN mkdir /opt/spark/conf
 COPY scripts/entrypoint.py /tmp/
 COPY flumenz/src/main/resources/*.conf /tmp/
 
+COPY flumenz/src/main/resources/* /opt/spark/conf/
+
 COPY --from=build /opt/input/target/scala-2.12/flumenz-assembly-0.1.jar  /opt/spark/jars
 
 WORKDIR /opt/spark/work-dir
