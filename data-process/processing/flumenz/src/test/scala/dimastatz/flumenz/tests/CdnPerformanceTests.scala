@@ -106,6 +106,26 @@ class CdnPerformanceTests extends AnyFunSuite with SparkTest {
     result.show(false)
   }
 
+  test(testName = "testNonJson") {
+    import session.sqlContext.implicits._
+    import dimastatz.flumenz.utilities.Extensions._
+    val content = Source.fromResource("cdn_log_broken_json.json").mkString
+
+    val df = List((UUID.randomUUID().toString, toTimestamp("2021-01-01T00:20:28"), "cdnlogs", content))
+      .toDF("key", "timestamp", "topic", "value")
+      .getKafkaLabels
+
+    assert(df.count() == 1)
+    assert(df.columns.length == 4)
+    assert(CdnQualityPipeline.getName == "CdnQuality")
+    assert(CdnQualityPipeline.getPartitions.contains("exec_dt"))
+
+    val result = CdnQualityPipeline.query(df)
+    assert(result.count() == 0)
+    result.printSchema()
+    result.show(false)
+  }
+
   test(testName = "testOwnerExtraction") {
     import dimastatz.flumenz.utilities.Edgecast._
     val path1 = "/80C078/origin-ausw2/slices/0ce/" +
