@@ -138,4 +138,22 @@ class CdnPerformanceTests extends AnyFunSuite with SparkTest {
     assert("/80C078/origin-default/ichnaea/u.js".getOwnerId.isFailure)
     assert("/80C078/origin-ausw2/slices/static/static.vtt".getOwnerId.isFailure)
   }
+
+  test("testAggregation") {
+    import session.sqlContext.implicits._
+
+    val df = List(
+      ("2021010100", "202109100031", "ba63d50dca2149d9a", "dce", "200", "0.1"),
+      ("2021010100", "202109100031", "ba63d50dca2149d9a", "dce", "200", "0.3"),
+      ("2021010100", "202109100031", "ba63d50dca2149d9a", "dce", "403", "0.1"),
+      ("2021010100", "202109100031", "ba63d50dca2149d9a", "dce", "403", "0.5")
+    )
+      .toDF("exec_dt", "dt", "owner_id", "pop", "status_code", "write_time")
+
+    val result = CdnQualityPipeline.aggregate(df)
+    assert(result.select("total").collect().head.getLong(0) == 4)
+    assert(result.select("http_error").collect().head.getLong(0) == 2)
+    assert(result.select("long_response_time").collect().head.getLong(0) == 2)
+
+  }
 }
