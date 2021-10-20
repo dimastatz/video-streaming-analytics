@@ -4,7 +4,7 @@ import java.util.UUID
 import scala.io.Source
 import org.apache.spark.sql._
 import com.typesafe.config.Config
-
+import org.apache.spark.sql.functions._
 import scala.collection.JavaConverters._
 import org.scalatest.funsuite.AnyFunSuite
 import dimastatz.flumenz.{Pipeline, Pipelines}
@@ -35,7 +35,7 @@ class CdnPerformanceTests extends AnyFunSuite with SparkTest {
     assert(CdnQualityPipeline.getName == "CdnQuality")
     assert(CdnQualityPipeline.getPartitions.contains("exec_dt"))
 
-    val result = CdnQualityPipeline.query(df)
+    val result = CdnQualityPipeline.normalize(df)
     assert(result.count() == 9)
   }
 
@@ -53,8 +53,13 @@ class CdnPerformanceTests extends AnyFunSuite with SparkTest {
     assert(CdnQualityPipeline.getName == "CdnQuality")
     assert(CdnQualityPipeline.getPartitions.contains("exec_dt"))
 
-    val result = CdnQualityPipeline.query(df)
-    assert(result.count() == 9)
+    val normalized = CdnQualityPipeline.normalize(df)
+    assert(normalized.count() == 9)
+    normalized.show()
+
+    val aggregated = CdnQualityPipeline.query(df)
+    assert(aggregated.count() == 6)
+    aggregated.show()
   }
 
   test(testName = "testSchemaLoad") {
@@ -100,10 +105,9 @@ class CdnPerformanceTests extends AnyFunSuite with SparkTest {
     assert(CdnQualityPipeline.getName == "CdnQuality")
     assert(CdnQualityPipeline.getPartitions.contains("exec_dt"))
 
-    val result = CdnQualityPipeline.query(df)
-    assert(result.count() == 8)
-    result.printSchema()
-    result.show(false)
+    val result = CdnQualityPipeline.normalize(df)
+    assert(result.count() == 9)
+    assert(result.filter(col("status_code").isNull).count() == 1)
   }
 
   test(testName = "testNonJson") {
@@ -122,8 +126,6 @@ class CdnPerformanceTests extends AnyFunSuite with SparkTest {
 
     val result = CdnQualityPipeline.query(df)
     assert(result.count() == 0)
-    result.printSchema()
-    result.show(false)
   }
 
   test(testName = "testOwnerExtraction") {

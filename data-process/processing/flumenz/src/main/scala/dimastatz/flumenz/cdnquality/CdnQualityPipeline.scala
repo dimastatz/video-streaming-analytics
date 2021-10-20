@@ -13,26 +13,37 @@ object CdnQualityPipeline extends Pipeline {
   override def getPartitions: List[String] = List("exec_dt")
 
   override def query(df: DataFrame): DataFrame = {
+    val normalized = normalize(df)
+    aggregate(normalized.filter(col("status_code").isNotNull))
+  }
+
+  def aggregate(df: DataFrame): DataFrame = {
+    df.groupBy("exec_dt", "dt", "owner_id", "pop")
+      .agg(
+        count("*").as("total"),
+        count(when(col("status_code") > 299, 1)).as("http_error"),
+        count(when(col("write_time") > 0.2, 1)).as("long_response_time")
+      )
+  }
+
+  def normalize(df: DataFrame): DataFrame = {
     val schema = readSchema()
     val getOwnerUdf = udf(getOwner _)
     val unpackJsonBatchUdf = udf(unpackJsonBatch _)
     val convertTimestampUdf = udf(convertTimestamp _)
     val convertUnixTimeUdf = udf(convertUnixTime _)
 
-    val result = df
+    df
       .select("timestamp", "value", "topic")
       .filter(col("topic") === "cdnlogs")
       .withColumn("exec_dt", convertTimestampUdf(col("timestamp"), lit("yyyyMMddHH")))
       .withColumn("value", unpackJsonBatchUdf(col("value")))
       .withColumn("value", explode(col("value")))
       .withColumn("value", from_json(col("value"), schema))
-      .filter(col("value.status_code").isNotNull)
       .select(col("value.*"), col("exec_dt"))
       .withColumn("dt", convertUnixTimeUdf(col("timestamp")))
       .withColumn("owner_id", getOwnerUdf(col("rewritten_path")))
       .select("exec_dt", "dt", "owner_id", "pop", "status_code", "write_time")
-
-    result
   }
 
   def convertUnixTime(x: Double): String = {
