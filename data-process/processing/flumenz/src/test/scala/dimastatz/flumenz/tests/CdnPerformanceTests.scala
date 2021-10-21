@@ -5,15 +5,20 @@ import scala.io.Source
 import org.apache.spark.sql._
 import com.typesafe.config.Config
 import org.apache.spark.sql.functions._
+
 import scala.collection.JavaConverters._
 import org.scalatest.funsuite.AnyFunSuite
 import dimastatz.flumenz.{Pipeline, Pipelines}
 import dimastatz.flumenz.cdnquality.CdnQualityPipeline
 import play.api.libs.json.Json
 
+import java.io.PrintWriter
+import java.net.ServerSocket
+
 class CdnPerformanceTests extends AnyFunSuite with SparkTest {
   val config: Config = getConfig
   val session: SparkSession = getSession("testCdnQualityFlow")
+  val stream: DataFrame = getSocketStream(session)
 
   test(testName = "testKafkaTopics") {
     val list = config.getStringList("conf.spark.kafka.topics").asScala.toList
@@ -154,6 +159,5 @@ class CdnPerformanceTests extends AnyFunSuite with SparkTest {
     assert(result.select("total").collect().head.getLong(0) == 4)
     assert(result.select("http_error").collect().head.getLong(0) == 2)
     assert(result.select("long_response_time").collect().head.getLong(0) == 2)
-
   }
 }
