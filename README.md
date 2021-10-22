@@ -3,8 +3,10 @@
 
 ## Introduction
 
-![alt text](https://github.com/dimastatz/video-streaming-analytics/blob/main/docs/chart-video-streaming.png)
+Apache Spark Streaming is a leading platform that provides scalable and fast data stream processing and is widely used to solve such problems as real-time predictions, pattern recognition, streaming analytics, and many more.  
 
+![alt text](https://github.com/dimastatz/video-streaming-analytics/blob/main/docs/chart-video-streaming.png)
+  
 
 ```scala
 import org.apache.spark.sql.functions._
