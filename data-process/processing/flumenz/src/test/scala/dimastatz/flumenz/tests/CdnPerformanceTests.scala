@@ -14,7 +14,6 @@ import play.api.libs.json.Json
 class CdnPerformanceTests extends AnyFunSuite with SparkTest {
   val config: Config = getConfig
   val session: SparkSession = getSession("testCdnQualityFlow")
-  val stream: DataFrame = getSocketStream(session)
 
   test(testName = "testKafkaTopics") {
     val list = config.getStringList("conf.spark.kafka.topics").asScala.toList
@@ -155,5 +154,33 @@ class CdnPerformanceTests extends AnyFunSuite with SparkTest {
     assert(result.select("total").collect().head.getLong(0) == 4)
     assert(result.select("http_error").collect().head.getLong(0) == 2)
     assert(result.select("long_response_time").collect().head.getLong(0) == 2)
+  }
+
+  test(testName = "testStreamingDf") {
+    import session.implicits._
+    import org.apache.spark.sql.execution.streaming.MemoryStream
+    implicit val ctx: SQLContext = session.sqlContext
+
+    val events = MemoryStream[String]
+    val sessions = events.toDF()
+    assert(sessions.isStreaming, "sessions must be a streaming Dataset")
+
+    val query = sessions.writeStream
+      .format("memory")
+      .queryName("test")
+      .outputMode("Update")
+      .start()
+
+    events.addData(List("1", "2", "3"))
+    query.processAllAvailable()
+    sessions.sqlContext
+      .table("test")
+      .show()
+
+    events.addData(List("3", "4"))
+    query.processAllAvailable()
+    sessions.sqlContext
+      .table("test")
+      .show()
   }
 }

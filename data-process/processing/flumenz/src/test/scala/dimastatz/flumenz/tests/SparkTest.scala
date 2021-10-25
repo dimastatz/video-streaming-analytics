@@ -3,12 +3,11 @@ package dimastatz.flumenz.tests
 import java.sql._
 import java.time._
 import com.typesafe.config._
-import org.apache.spark.sql.{DataFrame, SparkSession}
+import org.apache.spark.sql._
 
 import java.time.format.DateTimeFormatter
 
 trait SparkTest {
-  private val defaultPort = 8888
 
   org.slf4j.LoggerFactory
     .getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME)
@@ -27,14 +26,6 @@ trait SparkTest {
 
   def getConfig: Config = {
     ConfigFactory.load(s"test.conf")
-  }
-
-  def getSocketStream(session: SparkSession, port: Int = defaultPort): DataFrame = {
-    session.readStream
-      .format("socket")
-      .option("host", "localhost")
-      .option("port", port)
-      .load()
   }
 
   def toTimestamp(ts: String): Timestamp = {
