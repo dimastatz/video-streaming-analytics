@@ -5,15 +5,11 @@ import scala.io.Source
 import org.apache.spark.sql._
 import com.typesafe.config.Config
 import org.apache.spark.sql.functions._
-
 import scala.collection.JavaConverters._
 import org.scalatest.funsuite.AnyFunSuite
 import dimastatz.flumenz.{Pipeline, Pipelines}
 import dimastatz.flumenz.cdnquality.CdnQualityPipeline
 import play.api.libs.json.Json
-
-import java.io.PrintWriter
-import java.net.ServerSocket
 
 class CdnPerformanceTests extends AnyFunSuite with SparkTest {
   val config: Config = getConfig
