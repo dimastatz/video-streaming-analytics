@@ -3,13 +3,17 @@ package dimastatz.flumenz.tests
 import java.util.UUID
 import scala.io.Source
 import org.apache.spark.sql._
+import play.api.libs.json.Json
 import com.typesafe.config.Config
 import org.apache.spark.sql.functions._
+
 import scala.collection.JavaConverters._
 import org.scalatest.funsuite.AnyFunSuite
 import dimastatz.flumenz.{Pipeline, Pipelines}
 import dimastatz.flumenz.cdnquality.CdnQualityPipeline
-import play.api.libs.json.Json
+import org.apache.spark.sql.execution.streaming.MemoryStream
+
+import java.sql.Timestamp
 
 class CdnPerformanceTests extends AnyFunSuite with SparkTest {
   val config: Config = getConfig
@@ -158,11 +162,12 @@ class CdnPerformanceTests extends AnyFunSuite with SparkTest {
 
   test(testName = "testStreamingDf") {
     import session.implicits._
-    import org.apache.spark.sql.execution.streaming.MemoryStream
+    import dimastatz.flumenz.utilities.Extensions._
+
     implicit val ctx: SQLContext = session.sqlContext
 
     val events = MemoryStream[String]
-    val sessions = events.toDF()
+    val sessions = events.toKafkaDataFrame("edgecast", new Timestamp(System.currentTimeMillis()))
     assert(sessions.isStreaming, "sessions must be a streaming Dataset")
 
     val query = sessions.writeStream
