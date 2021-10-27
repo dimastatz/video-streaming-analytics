@@ -28,6 +28,12 @@ trait SparkTest {
     ConfigFactory.load(s"test.conf")
   }
 
+  def getConfigWithFallBack: Config = {
+    ConfigFactory
+      .load(s"test.conf")
+      .withFallback(ConfigFactory.load("base.conf"))
+  }
+
   def toTimestamp(ts: String): Timestamp = {
     new Timestamp(
       LocalDateTime
