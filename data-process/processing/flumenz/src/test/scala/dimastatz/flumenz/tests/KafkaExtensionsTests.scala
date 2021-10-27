@@ -1,5 +1,6 @@
 package dimastatz.flumenz.tests
 
+import dimastatz.flumenz.tests.utils.SparkTest
 import org.scalatest.funsuite.AnyFunSuite
 import dimastatz.flumenz.utilities.KafkaExtensions
 import org.apache.kafka.clients.consumer.KafkaConsumer

@@ -11,6 +11,7 @@ import scala.collection.JavaConverters._
 import org.scalatest.funsuite.AnyFunSuite
 import dimastatz.flumenz.{Pipeline, Pipelines}
 import dimastatz.flumenz.cdnquality.CdnQualityPipeline
+import dimastatz.flumenz.tests.utils.SparkTest
 import org.apache.spark.sql.execution.streaming.MemoryStream
 
 import java.sql.Timestamp

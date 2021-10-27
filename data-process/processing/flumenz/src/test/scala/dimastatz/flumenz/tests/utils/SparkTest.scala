@@ -1,11 +1,11 @@
-package dimastatz.flumenz.tests
+package dimastatz.flumenz.tests.utils
 
-import java.sql._
-import java.time._
-import com.typesafe.config._
-import org.apache.spark.sql._
+import com.typesafe.config.{Config, ConfigFactory}
+import org.apache.spark.sql.SparkSession
 
+import java.sql.Timestamp
 import java.time.format.DateTimeFormatter
+import java.time.{LocalDateTime, ZoneId}
 
 trait SparkTest {
 
