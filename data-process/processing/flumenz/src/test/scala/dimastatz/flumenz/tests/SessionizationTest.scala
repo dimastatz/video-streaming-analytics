@@ -9,7 +9,7 @@ import org.scalatest.funsuite.AnyFunSuite
 //noinspection SpellCheckingInspection
 class SessionizationTest extends AnyFunSuite with SparkTest {
   private val sleep = 200
-  private val iteration = 10
+  private val iteration = 2
   private val session = getSession()
 
   test("testSessionization") {
