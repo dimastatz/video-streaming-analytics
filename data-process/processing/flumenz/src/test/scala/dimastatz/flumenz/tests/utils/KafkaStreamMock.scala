@@ -33,9 +33,9 @@ class KafkaStreamMock(topic: String, ts: Timestamp, session: SparkSession) {
   def createQuery[T](df: Dataset[T]): streaming.StreamingQuery = {
     query = Some(
       df.writeStream
-        .format("memory")
+        .format("console")
         .queryName("test")
-        .outputMode("Update")
+        .outputMode("update")
         .option("checkpointLocation", tempDir.getAbsolutePath)
         .start()
     )
@@ -43,24 +43,11 @@ class KafkaStreamMock(topic: String, ts: Timestamp, session: SparkSession) {
     query.get
   }
 
-  def write(batch: List[String], processStream: Boolean = true, showResult: Boolean = true): DataFrame = {
+  def write(batch: List[String], processStream: Boolean = true): Unit = {
     memoryStream.addData(batch)
-
     if (processStream) {
       query.get.processAllAvailable()
     }
-
-    if (showResult) {
-      show()
-    }
-
-    kafkaDf.get.sqlContext.table("test")
-  }
-
-  def show(): Unit = {
-    kafkaDf.get.sqlContext
-      .table("test")
-      .show(false)
   }
 
   def dispose(): Boolean = {
