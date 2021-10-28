@@ -19,7 +19,7 @@ The main objective of this project is to collect, analyze and report the followi
   - Device data:
   - Cdn QoS:
 
-Another objective is to process and analyze data in near real-time, with the maximum latency of 2 minutes.
+Another objective is to process and analyze data in near real-time, with a max latency of 2 minutes.
 
 And the last objective, but not least, is to create the code as generic as possible. 
 
