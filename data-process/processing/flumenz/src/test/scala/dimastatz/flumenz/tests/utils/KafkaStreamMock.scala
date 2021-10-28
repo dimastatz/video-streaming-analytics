@@ -51,9 +51,16 @@ class KafkaStreamMock(topic: String, ts: Timestamp, session: SparkSession) {
     }
 
     if (showResult) {
-      kafkaDf.get.sqlContext.table("test").show(false)
+      show()
     }
+
     kafkaDf.get.sqlContext.table("test")
+  }
+
+  def show(): Unit = {
+    kafkaDf.get.sqlContext
+      .table("test")
+      .show(false)
   }
 
   def dispose(): Boolean = {

@@ -24,27 +24,48 @@ class SessionizationTest extends AnyFunSuite with SparkTest {
 
     Range(0, iteration).foreach(i => {
       val ts = new Timestamp(System.currentTimeMillis())
+      val batch = List(s"${i % (iteration / 3 + 1)}, ${ts.toString}")
+      kafka.write(batch, false)
+      Thread.sleep(sleep)
+    })
+    query.processAllAvailable()
+    kafka.show()
+
+    Range(0, iteration).foreach(i => {
+      val ts = new Timestamp(System.currentTimeMillis())
       val batch = List(s"${i % (iteration / 2 + 1)}, ${ts.toString}")
       kafka.write(batch, false)
       Thread.sleep(sleep)
     })
     query.processAllAvailable()
+    kafka.show()
+
     assert(kafka.dispose())
   }
 
   private def transform(df: DataFrame): DataFrame = {
     import session.implicits._
 
+    val getUser = udf(() => {
+      val r = scala.util.Random
+      r.nextInt(2) match {
+        case 0 => "userA"
+        case _ => "userB"
+      }
+    })
     val getSession = udf((x: String) => x.split(",").head)
     val getTimestamp = udf((x: String) => Timestamp.valueOf(x.split(",").last))
 
     df
       .select("value")
+      .withColumn("user", getUser())
       .withColumn("sessionId", getSession(col("value")))
       .withColumn("timestamp", getTimestamp(col("value")))
       .withWatermark("timestamp", "1 minutes")
-      .groupBy(window($"timestamp", "1 minutes"), col("sessionId"))
+      .groupBy(window($"timestamp", "1 minutes"), col("sessionId"), col("user"))
       .count()
       .as("events")
+
   }
+
 }
