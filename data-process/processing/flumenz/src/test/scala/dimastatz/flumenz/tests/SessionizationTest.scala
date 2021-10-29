@@ -11,7 +11,7 @@ import dimastatz.flumenz.tests.SessionizationTest._
 //noinspection SpellCheckingInspection
 class SessionizationTest extends AnyFunSuite with SparkTest {
   private val sleep = 200
-  private val iteration = 20
+  private val iteration = 0
   private val session = getSession()
 
   test("testSessionization") {

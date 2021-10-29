@@ -6,15 +6,11 @@ import org.apache.spark.sql._
 import play.api.libs.json.Json
 import com.typesafe.config.Config
 import org.apache.spark.sql.functions._
-
 import scala.collection.JavaConverters._
 import org.scalatest.funsuite.AnyFunSuite
 import dimastatz.flumenz.{Pipeline, Pipelines}
 import dimastatz.flumenz.cdnquality.CdnQualityPipeline
 import dimastatz.flumenz.tests.utils.SparkTest
-import org.apache.spark.sql.execution.streaming.MemoryStream
-
-import java.sql.Timestamp
 
 class CdnPerformanceTests extends AnyFunSuite with SparkTest {
   val config: Config = getConfig
@@ -60,11 +56,9 @@ class CdnPerformanceTests extends AnyFunSuite with SparkTest {
 
     val normalized = CdnQualityPipeline.normalize(df)
     assert(normalized.count() == 9)
-    normalized.show()
 
     val aggregated = CdnQualityPipeline.query(df)
     assert(aggregated.count() == 6)
-    aggregated.show()
   }
 
   test(testName = "testSchemaLoad") {
@@ -146,47 +140,24 @@ class CdnPerformanceTests extends AnyFunSuite with SparkTest {
 
   test("testAggregation") {
     import session.sqlContext.implicits._
-
-    val df = List(
-      ("2021010100", "202109100031", "ba63d50dca2149d9a", "dce", "200", "0.1"),
-      ("2021010100", "202109100031", "ba63d50dca2149d9a", "dce", "200", "0.3"),
-      ("2021010100", "202109100031", "ba63d50dca2149d9a", "dce", "403", "0.1"),
-      ("2021010100", "202109100031", "ba63d50dca2149d9a", "dce", "403", "0.5")
-    )
-      .toDF("exec_dt", "dt", "owner_id", "pop", "status_code", "write_time")
-
-    val result = CdnQualityPipeline.aggregate(df)
-    assert(result.select("total").collect().head.getLong(0) == 4)
-    assert(result.select("http_error").collect().head.getLong(0) == 2)
-    assert(result.select("long_response_time").collect().head.getLong(0) == 2)
-  }
-
-  test(testName = "testStreamingDf") {
-    import session.implicits._
     import dimastatz.flumenz.utilities.Extensions._
 
-    implicit val ctx: SQLContext = session.sqlContext
+    val content = Source.fromResource("cdn_log_batch.json").mkString
 
-    val events = MemoryStream[String]
-    val sessions = events.toKafkaDataFrame("edgecast", new Timestamp(System.currentTimeMillis()))
-    assert(sessions.isStreaming, "sessions must be a streaming Dataset")
+    val df = List((UUID.randomUUID().toString, toTimestamp("2021-01-01T00:20:28"), "cdnlogs", content))
+      .toDF("key", "timestamp", "topic", "value")
+      .getKafkaLabels
 
-    val query = sessions.writeStream
-      .format("memory")
-      .queryName("test")
-      .outputMode("Update")
-      .start()
+    assert(df.count() == 1)
+    assert(df.columns.length == 4)
+    assert(CdnQualityPipeline.getName == "CdnQuality")
+    assert(CdnQualityPipeline.getPartitions.contains("exec_dt"))
 
-    events.addData(List("1", "2", "3"))
-    query.processAllAvailable()
-    sessions.sqlContext
-      .table("test")
-      .show()
+    val result = CdnQualityPipeline.aggregate(CdnQualityPipeline.normalize(df))
+    result.show()
 
-    events.addData(List("3", "4"))
-    query.processAllAvailable()
-    sessions.sqlContext
-      .table("test")
-      .show()
+    assert(result.select("total").collect().map(_.getLong(0)).sum == 9)
+    assert(result.select("http_error").collect().map(_.getLong(0)).sum == 0)
+    assert(result.select("long_response_time").collect().map(_.getLong(0)).sum == 1)
   }
 }

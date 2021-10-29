@@ -18,9 +18,13 @@ object CdnQualityPipeline extends Pipeline {
   }
 
   def aggregate(df: DataFrame): DataFrame = {
-    df.groupBy("exec_dt", "dt", "owner_id", "pop")
+    df
+      .withWatermark("ts", "1 minutes")
+      .groupBy(window(col("ts"), "1 minutes"), col("owner_id"), col("pop"))
       .agg(
-        count("*").as("total"),
+        min("exec_dt").as("exec_dt"),
+        min("dt").as("dt"),
+        count("status_code").as("total"),
         count(when(col("status_code") > 299, 1)).as("http_error"),
         count(when(col("write_time") > 0.2, 1)).as("long_response_time")
       )
@@ -32,6 +36,7 @@ object CdnQualityPipeline extends Pipeline {
     val unpackJsonBatchUdf = udf(unpackJsonBatch _)
     val convertTimestampUdf = udf(convertTimestamp _)
     val convertUnixTimeUdf = udf(convertUnixTime _)
+    val convertToTimestamp = udf((x: Double) => new Timestamp(x.toLong * 1000))
 
     df
       .select("timestamp", "value", "topic")
@@ -43,7 +48,8 @@ object CdnQualityPipeline extends Pipeline {
       .select(col("value.*"), col("exec_dt"))
       .withColumn("dt", convertUnixTimeUdf(col("timestamp")))
       .withColumn("owner_id", getOwnerUdf(col("rewritten_path")))
-      .select("exec_dt", "dt", "owner_id", "pop", "status_code", "write_time")
+      .withColumn("ts", convertToTimestamp(col("timestamp")))
+      .select("exec_dt", "dt", "ts", "owner_id", "pop", "status_code", "write_time")
   }
 
   def convertUnixTime(x: Double): String = {
