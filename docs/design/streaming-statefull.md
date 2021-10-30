@@ -21,17 +21,12 @@ by Points of Presents. In addition, create the minutely aggregation in order to 
 
 
 
-+----+-----+
-|User|count|
-+----+-----+
-|   a| 8085|
-|   b| 9123|
-|   c| 7715|
-|   g| 9167|
-|   h| 7733|
-|   e| 9891|
-|   f| 9206|
-|   d| 8124|
-|   i| 9255|
-+----+-----+
+------------
+User | count
+------------
+a    | 8085  
+b    | 9123
+
+
+
 
