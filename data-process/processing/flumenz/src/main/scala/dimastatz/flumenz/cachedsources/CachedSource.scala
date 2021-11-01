@@ -21,7 +21,11 @@ class CachedSource[Q, R](params: CachedSourceParams[Q, R], cache: Option[Cache[Q
   private val innerCache = cache match {
     case Some(c) => c
     case None =>
-      Scaffeine().recordStats().expireAfterAccess(params.expireHr.hour).maximumSize(params.cacheSize).build[Q, R]()
+      Scaffeine()
+        .recordStats()
+        .expireAfterAccess(params.expireHr.hour)
+        .maximumSize(params.cacheSize)
+        .build[Q, R]()
   }
 
   def readCache(query: Q): R = {
