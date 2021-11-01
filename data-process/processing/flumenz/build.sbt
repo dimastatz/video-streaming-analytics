@@ -57,6 +57,7 @@ libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest-funsuite" % "3.2.6" % Test,
   "org.scalatest" %% "scalatest" % "3.2.6" % "test",
   "com.amazonaws" % "aws-java-sdk-bundle" % "1.11.965",
+  "com.github.blemale" %% "scaffeine" % "4.1.0" % Compile,
   "org.apache.hadoop" % "hadoop-aws" % "3.2.0",
   "org.apache.spark" %% "spark-sql" % sparkVersion,
   "org.apache.spark" %% "spark-streaming" % sparkVersion,
