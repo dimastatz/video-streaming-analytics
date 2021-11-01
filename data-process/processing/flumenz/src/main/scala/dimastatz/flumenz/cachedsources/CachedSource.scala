@@ -4,33 +4,44 @@ import scala.util._
 import scala.concurrent.duration._
 import com.github.blemale.scaffeine._
 
-case class Notification(hit: Option[Boolean], readFailure: Option[Throwable] = None)
+case class Notification(
+    hit: Option[Boolean],
+    readFailure: Option[Throwable] = None
+)
 
-trait CachedSource[Q, R] {
-  def createCache(expireHr: Int, size: Int): Cache[Q, R] = {
-    Scaffeine().recordStats().expireAfterAccess(expireHr.hour).maximumSize(size).build[Q, R]()
+case class CachedSourceParams[Q, R](
+    expireHr: Int,
+    cacheSize: Int,
+    notifier: Notification => Unit,
+    readSource: Q => R,
+    default: R
+)
+
+class CachedSource[Q, R](params: CachedSourceParams[Q, R], cache: Option[Cache[Q, R]]) {
+  private val innerCache = cache match {
+    case Some(c) => c
+    case None =>
+      Scaffeine().recordStats().expireAfterAccess(params.expireHr.hour).maximumSize(params.cacheSize).build[Q, R]()
   }
 
-  def readCache(cache: Cache[Q, R])(query: Q): R = {
-    cache.getIfPresent(query) match {
+  def readCache(query: Q): R = {
+    innerCache.getIfPresent(query) match {
       case Some(x) =>
-        notify(Notification(Some(true)))
+        params.notifier(Notification(Some(true)))
         x
       case None =>
-        notify(Notification(Some(false)))
-        cache.put(query, tryReadFromSource(query))
-        cache.getIfPresent(query).get
+        params.notifier(Notification(Some(false)))
+        innerCache.put(query, tryReadFromSource(query))
+        innerCache.getIfPresent(query).get
     }
   }
 
   def tryReadFromSource(query: Q): R = {
-    Try(readFromSource(query)) match {
+    Try(params.readSource(query)) match {
       case Success(v) => v
-      case Failure(x) => defaultResult
+      case Failure(x) =>
+        params.notifier(Notification(None, Some(x)))
+        params.default
     }
   }
-
-  val defaultResult: R
-  def readFromSource(query: Q): R
-  def notify(message: Notification): Unit
 }
