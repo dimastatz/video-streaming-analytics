@@ -10,8 +10,8 @@ import dimastatz.flumenz.tests.SessionizationTest._
 
 //noinspection SpellCheckingInspection
 class SessionizationTest extends AnyFunSuite with SparkTest {
-  private val sleep = 200
-  private val iteration = 0
+  private val sleep = 100
+  private val iteration = 10
   private val session = getSession()
 
   test("testSessionization") {
@@ -78,25 +78,19 @@ object SessionizationTest {
   case class Result(sessionId: String, closed: Boolean, count: Int)
 
   def process(sessionId: String, events: Iterator[Row], state: GroupState[Result]): Result = {
-    val default = Result(sessionId, false, 0)
+    val eventsList = events.toList
+    val currentState = state.getOption.getOrElse(Result(sessionId, false, 0))
+    println(s"Processing started $sessionId ${eventsList.length} $currentState")
+
     if (state.hasTimedOut) {
-      println(s"TO $sessionId")
-      val result = state.getOption.getOrElse(default)
       state.remove()
-      result
+      currentState
     } else {
-      val current = state.getOption.getOrElse(default)
-      if (current.count + events.length > 3) {
-        state.update(Result(sessionId, true, current.count + events.length))
+      if (currentState.count + eventsList.length > 3) {
+        state.update(Result(sessionId, true, currentState.count + eventsList.length))
       } else {
-        state.update(Result(sessionId, false, current.count + events.length))
+        state.update(Result(sessionId, false, currentState.count + eventsList.length))
       }
-
-      events.foreach(e => {
-        println(s"EV ${e.getAs[String]("sessionId")}")
-      })
-
-      println(s"US ${state.get} ${events.length}")
       state.get
     }
   }
