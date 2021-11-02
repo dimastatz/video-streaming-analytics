@@ -79,14 +79,14 @@ object SessionizationTest {
 
   def process(sessionId: String, events: Iterator[Row], state: GroupState[Result]): Result = {
     val eventsList = events.toList
-    val currentState = state.getOption.getOrElse(Result(sessionId, false, 0))
+    val currentState = state.getOption.getOrElse(Result(sessionId, closed = false, 0))
     println(s"Processing started $sessionId ${eventsList.length} $currentState")
 
     if (state.hasTimedOut) {
       state.remove()
       currentState
     } else {
-      if (currentState.count + eventsList.length > 3) {
+      if (currentState.count + eventsList.length >= 3) {
         state.update(Result(sessionId, closed = true, currentState.count + eventsList.length))
       } else {
         state.update(Result(sessionId, closed = false, currentState.count + eventsList.length))
