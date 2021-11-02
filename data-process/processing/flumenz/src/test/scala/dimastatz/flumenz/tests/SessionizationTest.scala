@@ -87,9 +87,9 @@ object SessionizationTest {
       currentState
     } else {
       if (currentState.count + eventsList.length > 3) {
-        state.update(Result(sessionId, true, currentState.count + eventsList.length))
+        state.update(Result(sessionId, closed = true, currentState.count + eventsList.length))
       } else {
-        state.update(Result(sessionId, false, currentState.count + eventsList.length))
+        state.update(Result(sessionId, closed = false, currentState.count + eventsList.length))
       }
       state.get
     }
