@@ -17,7 +17,7 @@ The main objective of this project is to collect, analyze and report the followi
   - Start-up time - the time it takes to start playing the video
   - Video buffering - describes the time it takes to (pre-)load the data that is needed to play a video
   - Geolocation - the geographical popularity of the video
-  - Device data - discovers the OS, browsers, video players across the audience 
+  - Device data - discovers the OS, browsers, video players that are used by the audience 
   - Cdn QoS - quality of service of the CDN.
 
 Another objective is to process and analyze data in near real-time, with a max latency of 2 minutes.
@@ -26,3 +26,4 @@ And the last objective, but not least, is to create the code as generic as possi
 
 
 ## Project Scope
+
