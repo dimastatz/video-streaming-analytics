@@ -11,17 +11,18 @@ Be aware that Video Streaming Platforms can differ from one to another. In the c
 
 ## Objectives
 The main objective of this project is to collect, analyze and report the following video KPIs
-  - Views:
-  - Unique views:
-  - Start-up time:
-  - Video buffering:
-  - Geolocation:
-  - Device data:
-  - Cdn QoS:
+  - Views - indicates how many times your video has been consumed
+  - Unique views = represent the actual number of people who watched the video or live stream
+  - Session duration = the average time a user watched the video
+  - Start-up time - the time it takes to start playing the video
+  - Video buffering - describes the time it takes to (pre-)load the data that is needed to play a video
+  - Geolocation - the geographical popularity of the video
+  - Device data - discovers the OS, browsers, video players across the audience 
+  - Cdn QoS - quality of service of the CDN.
 
 Another objective is to process and analyze data in near real-time, with a max latency of 2 minutes.
 
 And the last objective, but not least, is to create the code as generic as possible. 
 
 
-## Analysis
+## Project Scope
