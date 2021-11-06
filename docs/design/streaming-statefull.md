@@ -27,9 +27,9 @@ Should produce the following sequence of Sessions
 val session1 = Session("1", 1)
 val session3 = Session("3", 0)
 val session2 = Session("2", 60)
-```
-  
+```  
 <br/>
+
 # Solution
 
 
