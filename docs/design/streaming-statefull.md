@@ -2,14 +2,12 @@
 Consider a sessionization problem. Each session consists of two events of a starting event and a closing event. The following case classes define events and session structure in the system.
 
 ```scala
-case class Event(sessionId: String, eventType: String, ts: Timestamp)
-
 case class Session(sessionId: String, durationMinutes: Int)
+case class Event(sessionId: String, eventType: String, ts: Timestamp)
 ```
 
 Each event can be either SessionOpen or SessionClose event.
 Design and implement the solution that calculates sessions length. The max session length is 1 hour. Due to delivery errors in the system, some sessions have the OpenSession event only. Such sessions should be closed due to timeout, and session duration should be the max session duration - 1 hour. Some sessions have the CloseSession events only and should be closed immediately, and the session duration will be 0.   
-
 
 - Example:
 
