@@ -1,6 +1,8 @@
 # Problem Scope
-Given a stream of events from CDN logs, calculate the quality of service of the CDN 
-by Points of Presents. In addition, create the minutely aggregation in order to reduce the size of the result set.
+Consider a sessionization problem. Each session consists of two events of a starting event and a closing event. The following case class defines events structure in the system.
+
+```scala
+case class Event(sessionId: String, eventType: String, ts: Timestamp)
 
 - Example:
   

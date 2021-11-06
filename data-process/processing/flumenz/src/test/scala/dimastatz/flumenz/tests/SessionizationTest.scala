@@ -3,9 +3,9 @@ package dimastatz.flumenz.tests
 import java.sql.Timestamp
 import org.apache.spark.sql._
 import dimastatz.flumenz.tests.utils._
+import org.apache.spark.sql.streaming._
 import org.apache.spark.sql.functions._
 import org.scalatest.funsuite.AnyFunSuite
-import org.apache.spark.sql.streaming.{GroupState, GroupStateTimeout}
 import dimastatz.flumenz.tests.SessionizationTest._
 
 //noinspection SpellCheckingInspection
@@ -75,6 +75,8 @@ class SessionizationTest extends AnyFunSuite with SparkTest {
 }
 
 object SessionizationTest {
+  case class Event(sessionId: String, eventType: String, ts: Timestamp)
+
   case class Result(sessionId: String, closed: Boolean, count: Int)
 
   def process(sessionId: String, events: Iterator[Row], state: GroupState[Result]): Result = {
