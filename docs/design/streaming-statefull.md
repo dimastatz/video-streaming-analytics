@@ -4,6 +4,7 @@ Consider a sessionization problem. Each session consists of two events of a star
 ```scala
 case class Event(sessionId: String, eventType: String, ts: Timestamp)
 
+
 - Example:
   
 <br/>
