@@ -6,7 +6,12 @@ import dimastatz.flumenz.Pipeline
 import org.apache.spark.sql.streaming._
 
 class SessionPipeline(session: SparkSession, watermark: Int) extends Pipeline {
-  case class Event(sessionId: String, eventType: String, ts: Timestamp)
+
+  case class Event(
+      sessionId: String,
+      eventType: String,
+      ts: Timestamp
+  )
 
   case class Session(
       sessionId: String,
