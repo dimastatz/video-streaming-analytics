@@ -1,13 +1,14 @@
 # Problem Scope
-Consider a sessionization problem. Each session consists of two events of a starting event and a closing event. The following case classes define events and session structure in the system.
+Consider a sessionization problem in Data Streaming Systems. Each session consists of sequence of events following by a closing event or by a period of inactivity. The following case classes define events and session structure in the system.
 
 ```scala
-case class Session(sessionId: String, durationMinutes: Int)
 case class Event(sessionId: String, eventType: String, ts: Timestamp)
+
+case class Session(sessionId: String, start: Timestamp, close: Timestamp, events: Int, close_dt: String)
 ```
 
-Each event can be either SessionOpen or SessionClose event.
-Design and implement the solution that calculates sessions length. The max session length is 1 hour. Due to delivery errors in the system, some sessions have the OpenSession event only. Such sessions should be closed due to timeout, and session duration should be the max session duration - 1 hour. Some sessions have the CloseSession events only and should be closed immediately, and the session duration will be 0.   
+Each event can be either SessionOpen, SessionProgress or SessionClose event.
+Design and implement the solution that calculates sessions duration and sessions message number. The max session length is 1 hour. Due to delivery errors in the system, some sessions have no SessionClose events. Such sessions should be closed due to timeout. Some sessions will miss SessionOpen event due to data loss. Such sessions will have negative duration.  
 
 - Example:
 
