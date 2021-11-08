@@ -1,13 +1,12 @@
 package dimastatz.flumenz.tests.utils
 
-import org.apache.commons.io.FileUtils
-import org.apache.spark.sql._
-import org.apache.spark.sql.execution.streaming.MemoryStream
-import org.apache.spark.sql.functions.lit
-
 import java.io.File
 import java.nio.file._
 import java.sql.Timestamp
+import org.apache.spark.sql._
+import org.apache.commons.io.FileUtils
+import org.apache.spark.sql.functions.lit
+import org.apache.spark.sql.execution.streaming._
 
 class KafkaStreamMock(topic: String, ts: Timestamp, session: SparkSession) {
   import session.implicits._

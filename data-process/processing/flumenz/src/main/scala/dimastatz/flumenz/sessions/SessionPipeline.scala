@@ -3,10 +3,10 @@ package dimastatz.flumenz.sessions
 import java.sql._
 import org.apache.spark.sql._
 import dimastatz.flumenz.Pipeline
+import org.apache.spark.sql.functions._
 import org.apache.spark.sql.streaming._
 
 class SessionPipeline(session: SparkSession, watermark: Int) extends Pipeline {
-
   case class Event(
       sessionId: String,
       eventType: String,
@@ -29,9 +29,16 @@ class SessionPipeline(session: SparkSession, watermark: Int) extends Pipeline {
   }
 
   override def query(df: DataFrame): DataFrame = {
+    val resultDf = df
+      .select("timestamp", "value", "topic")
+      .filter(col("topic") === "cdnlogs")
+      .select("sessionId", "eventType", "ts")
+    aggregate(resultDf, watermark)
+  }
+
+  def aggregate(df: DataFrame, watermark: Int): DataFrame = {
     import session.implicits._
     df
-      .select("sessionId", "eventType", "ts")
       .as[Event]
       .withWatermark("timestamp", delayThreshold = s"$watermark minutes")
       .groupByKey(_.sessionId)
