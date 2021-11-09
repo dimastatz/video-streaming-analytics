@@ -6,22 +6,22 @@ import dimastatz.flumenz.Pipeline
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.streaming._
 
-class SessionPipeline(session: SparkSession, watermark: Int) extends Pipeline {
-  case class Event(
-      sessionId: String,
-      eventType: String,
-      ts: Timestamp
-  )
+case class Event(
+    sessionId: String,
+    eventType: String,
+    timestamp: Timestamp
+)
 
-  case class Session(
-      sessionId: String,
-      start: Timestamp,
-      close: Timestamp,
-      duration: Int,
-      events: Int,
-      close_dt: String
-  )
+case class Session(
+    sessionId: String,
+    start: Timestamp,
+    close: Timestamp,
+    duration: Int,
+    events: Int,
+    close_dt: String
+)
 
+class SessionPipeline(session: SparkSession, watermark: Int) extends Pipeline with Serializable {
   override def getName: String = "SessionsPipeline"
 
   override def getPartitions: Seq[String] = {
@@ -54,14 +54,24 @@ class SessionPipeline(session: SparkSession, watermark: Int) extends Pipeline {
       state.remove()
       session
     } else {
+      val eventsList = events.toList
+      println(eventsList)
+
       val updatedSession = events.toList.foldLeft(session)((s, e) =>
         e.eventType match {
           case "sessionOpen" =>
-            Session(s.sessionId, e.ts, s.close, getDuration(s.close, e.ts), s.events + 1, s.close_dt)
+            Session(s.sessionId, e.timestamp, s.close, getDuration(s.close, e.timestamp), s.events + 1, s.close_dt)
           case "sessionProgress" =>
             Session(s.sessionId, s.start, s.close, s.duration, s.events + 1, s.close_dt)
           case "sessionClose" =>
-            Session(s.sessionId, s.start, e.ts, getDuration(s.close, e.ts), s.events + 1, convertTs(e.ts))
+            Session(
+              s.sessionId,
+              s.start,
+              e.timestamp,
+              getDuration(s.close, e.timestamp),
+              s.events + 1,
+              convertTs(e.timestamp)
+            )
         }
       )
       state.update(updatedSession)

@@ -7,7 +7,7 @@ case class Event(sessionId: String, eventType: String, ts: Timestamp)
 case class Session(sessionId: String, start: Timestamp, close: Timestamp, events: Int, close_dt: String)
 ```
 
-Each event can be either SessionOpen, SessionProgress or SessionClose event.
+Each event can be either SessionOpen, SessionProgress, or SessionClose event.
 Design and implement the solution that calculates sessions duration and sessions message number. The max session length is 1 hour. Due to delivery errors in the system, some sessions have no SessionClose events. Such sessions should be closed due to timeout. Some sessions will miss SessionOpen event due to data loss. Such sessions will have negative duration.  
 
 - Example:

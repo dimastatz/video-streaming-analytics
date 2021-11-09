@@ -3,12 +3,15 @@ package dimastatz.flumenz.tests
 import java.sql.Timestamp
 import dimastatz.flumenz.tests.utils._
 import org.scalatest.funsuite.AnyFunSuite
-import dimastatz.flumenz.sessions.SessionPipeline
+import dimastatz.flumenz.sessions._
+import org.apache.spark.sql.functions._
+import org.apache.spark.sql.types.StructType
+import play.api.libs.json.Json
 
 //noinspection SpellCheckingInspection
 class SessionizationTest extends AnyFunSuite with SparkTest {
   private val sleep = 100
-  private val iteration = 10
+  private val iteration = 1
   private val session = getSession()
 
   test("testSessionization") {
@@ -19,13 +22,23 @@ class SessionizationTest extends AnyFunSuite with SparkTest {
     val df = kafka.createStream()
     assert(df.isStreaming)
 
-    val query = kafka.createQuery(pipeline.aggregate(df, watermark = 1))
+    import org.apache.spark.sql.catalyst.ScalaReflection
+    val schema = ScalaReflection.schemaFor[Event].dataType.asInstanceOf[StructType]
+
+    val cleanDf = df
+      .select("value")
+      .withColumn("value", from_json(col("value"), schema))
+      .select(col("value.*"))
+
+    val query = kafka.createQuery(pipeline.aggregate(cleanDf, watermark = 1))
     assert(query.isActive)
 
     Range(0, iteration).foreach(i => {
-      val ts = new Timestamp(System.currentTimeMillis())
-      val batch = List(s"${i % (iteration / 3 + 1)}, ${ts.toString}")
-      kafka.write(batch, false)
+      val e = Event("1", "sessionOpen", ts)
+      val json = Json.writes[Event].writes(e).toString()
+      println(json)
+
+      kafka.write(List(json), false)
       Thread.sleep(sleep)
     })
 

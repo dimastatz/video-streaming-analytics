@@ -5,7 +5,7 @@ import java.nio.file._
 import java.sql.Timestamp
 import org.apache.spark.sql._
 import org.apache.commons.io.FileUtils
-import org.apache.spark.sql.functions.lit
+import org.apache.spark.sql.functions._
 import org.apache.spark.sql.execution.streaming._
 
 class KafkaStreamMock(topic: String, ts: Timestamp, session: SparkSession) {
@@ -18,15 +18,13 @@ class KafkaStreamMock(topic: String, ts: Timestamp, session: SparkSession) {
   val tempDir: File = Files.createTempDirectory("kafka-test-").toFile
 
   def createStream(): DataFrame = {
-    kafkaDf = Some(
-      memoryStream
-        .toDF()
-        .withColumn("topic", lit(topic))
-        .withColumn("timestamp", lit(ts))
-        .withColumn("key", lit("key"))
-    )
+    val df = memoryStream
+      .toDF()
+      .withColumn("topic", lit(topic))
+      .withColumn("timestamp", lit(ts))
 
-    kafkaDf.get
+    kafkaDf = Some(df)
+    df
   }
 
   def createQuery[T](df: Dataset[T]): streaming.StreamingQuery = {
