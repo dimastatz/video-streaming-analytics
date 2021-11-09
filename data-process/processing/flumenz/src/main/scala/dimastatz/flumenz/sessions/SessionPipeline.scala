@@ -47,7 +47,7 @@ class SessionPipeline(session: SparkSession, watermark: Int) extends Pipeline wi
   }
 
   private def process(sessionId: String, events: Iterator[Event], state: GroupState[Session]): Session = {
-    val ts = new Timestamp(Long.MinValue)
+    val ts = new Timestamp(0)
     val session = state.getOption.getOrElse(Session(sessionId, ts, ts, 0, 0, ""))
 
     if (state.hasTimedOut) {

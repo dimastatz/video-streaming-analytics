@@ -17,7 +17,7 @@ class SessionizationTest extends AnyFunSuite with SparkTest {
   test("testSessionization") {
     val pipeline = new SessionPipeline(session, 1)
 
-    val ts = new Timestamp(System.currentTimeMillis())
+    val ts = new Timestamp(System.currentTimeMillis() / 1000)
     val kafka = new KafkaStreamMock("cdnlogs", ts, getSession())
     val df = kafka.createStream()
     assert(df.isStreaming)
@@ -30,7 +30,9 @@ class SessionizationTest extends AnyFunSuite with SparkTest {
       .withColumn("value", from_json(col("value"), schema))
       .select(col("value.*"))
 
-    val query = kafka.createQuery(pipeline.aggregate(cleanDf, watermark = 1))
+    cleanDf.printSchema()
+
+    val query = kafka.createQuery(pipeline.aggregate(cleanDf, 1))
     assert(query.isActive)
 
     Range(0, iteration).foreach(i => {
