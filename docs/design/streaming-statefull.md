@@ -16,9 +16,9 @@ The following sequence of events:
 
 ```scala
 val m1 = Event("1", "SessionOpen", new Timestamp(System.currentTimeMillis()))
-val m1 = Event("2", "SessionOpen", new Timestamp(System.currentTimeMillis()))
-val m1 = Event("1", "SessionClose", new Timestamp(System.currentTimeMillis()))
-val m1 = Event("3", "SessionClose", new Timestamp(System.currentTimeMillis()))
+val m2 = Event("2", "SessionOpen", new Timestamp(System.currentTimeMillis()))
+val m3 = Event("3", "SessionClose", new Timestamp(System.currentTimeMillis()))
+val m11 = Event("1", "SessionClose", new Timestamp(System.currentTimeMillis()))
 ```
 
 Should produce the following sequence of Sessions
