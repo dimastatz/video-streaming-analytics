@@ -24,7 +24,14 @@ The main objective of this project is to collect, analyze and report the followi
 
 
 ## Tech Stack
-
 The solution is developed on top of Apache Spark Streaming and can be seen as a domain-specific add-on to Apache Spark Streaming.
-Another important aspect of this project is Cloud Nativeness. This project avoids Cloud Specific lockdowns, like using managed services, proprietary software, etc. 
+Another important aspect of this project is Cloud Nativeness. This project avoids Cloud Specific lockdowns, like dependency on managed services, proprietary software, etc. In order to achieve the `run anywere' ability, containerization is used widely. All needed toold, libs, code and runtime engines are packaged into docker containers. Docker-Compose is used to simulate the full production environment.
+As for languages, Python and Scala are main languages of this project.
+
+## Design
+TBD
+
+## How to use
+TBD
+
 
