@@ -1,8 +1,6 @@
 # Video Streaming Analytics with Apache Spark
 
-
 ## Introduction
-
 Video Streaming Analytics platforms help overcome streaming problems, understand the audience better and optimize the viewer’s satisfaction by ensuring higher video streaming quality. 
 Video Streaming Platforms can differ from one to another. In the current project, we create the Analytics for the Video Streaming platforms that have the following components in common: Video Processing, Media Packaging, Media Storage, and Video Distribution.  
 <br/>
@@ -26,14 +24,14 @@ The main objective of this project is to collect, analyze and report the followi
 ## Tech Stack
 The solution is developed on top of Apache Spark Streaming and can be seen as a domain-specific add-on to Apache Spark Streaming.
 Another important aspect of this project is Cloud Nativeness. This project avoids Cloud Specific lockdowns, like dependency on managed services, proprietary software, etc. In order to achieve the `run anywere' ability, containerization is used widely. All needed tools, libs, code and runtime engines are packaged into docker containers. Docker-Compose is used to simulate the full production environment.
-As for languages, Python and Scala are main languages of this project.
+As for programming languages, Python and Scala are main languages of this project.
 
 ## Design
 The project is built on top of Apache Spark Streaming. Apache Kafka is used as a data source for the Apache Spark Streaming. The processed data is writtend to the File Sink by using Append Mode.
 
 
 ## How to use
-As a prerequistes you should install [docker desktop](https://docs.docker.com/desktop/) and [docker compose](https://docs.docker.com/compose/). 
-Run [docker-compose-process.yml](https://github.com/dimastatz/video-streaming-analytics/blob/946d90a124a4e8b8078dca347abb109ded971eef/docker-compose-process.yml)
+As a prerequistes you should install [docker desktop](https://docs.docker.com/desktop/) and [docker compose](https://docs.docker.com/compose/). Once docker software is installed, you can run  
+[docker-compose-process.yml](https://github.com/dimastatz/video-streaming-analytics/blob/946d90a124a4e8b8078dca347abb109ded971eef/docker-compose-process.yml). This docker-compose file starts Apache Kafka and Apache Spark Streaming containers. You can feed data into the Apache Kafka in order to see how it works.
 
 
