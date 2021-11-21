@@ -27,9 +27,9 @@ Another important aspect of this project is Cloud Nativeness. This project avoid
 As for programming languages, Python and Scala are main languages of this project.
 
 ## Design
-The project is built on top of Apache Spark Streaming. Apache Kafka is used as a data source for the Apache Spark Streaming. The processed data is writtend to the File Sink by using Append Mode.
+The project is built on top of Apache Spark Streaming. Apache Kafka is used as a data source for the Apache Spark Streaming. The processed data is writtend to the File Sink by using Append Mode.  
 <br/>
-![alt text](https://github.com/dimastatz/video-streaming-analytics/blob/main/docs/chart-spark-app.png)
+![alt text](https://github.com/dimastatz/video-streaming-analytics/blob/0ec45b4eb3200fd7edbb32c5d09a538f863dce3b/docs/chart-spark-app.png)
 <br/>  
 
 ## How to use
