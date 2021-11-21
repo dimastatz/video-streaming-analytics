@@ -28,7 +28,9 @@ As for programming languages, Python and Scala are main languages of this projec
 
 ## Design
 The project is built on top of Apache Spark Streaming. Apache Kafka is used as a data source for the Apache Spark Streaming. The processed data is writtend to the File Sink by using Append Mode.
-
+<br/>
+![alt text](https://github.com/dimastatz/video-streaming-analytics/blob/main/docs/chart-spark-app.png)
+<br/>  
 
 ## How to use
 As a prerequistes you should install [docker desktop](https://docs.docker.com/desktop/) and [docker compose](https://docs.docker.com/compose/). Once docker software is installed, you can run 
