@@ -31,7 +31,7 @@ The project is built on top of Apache Spark Streaming. Apache Kafka is used as a
 
 
 ## How to use
-As a prerequistes you should install [docker desktop](https://docs.docker.com/desktop/) and [docker compose](https://docs.docker.com/compose/). Once docker software is installed, you can run  
+As a prerequistes you should install [docker desktop](https://docs.docker.com/desktop/) and [docker compose](https://docs.docker.com/compose/). Once docker software is installed, you can run 
 [docker-compose-process.yml](https://github.com/dimastatz/video-streaming-analytics/blob/946d90a124a4e8b8078dca347abb109ded971eef/docker-compose-process.yml). This docker-compose file starts Apache Kafka and Apache Spark Streaming containers. You can feed data into the Apache Kafka in order to see how it works.
 
 
