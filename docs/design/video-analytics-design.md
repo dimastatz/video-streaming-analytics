@@ -4,8 +4,9 @@
 Video Streaming Analytics platforms help overcome streaming problems, understand the audience better and optimize the viewer’s satisfaction by ensuring higher video streaming quality. 
 Video Streaming Platforms can differ from one to another. In the current project, we create the Analytics for the Video Streaming platforms that have the following components in common: Video Processing, Media Packaging, Media Storage, and Video Distribution.  
 <br/>
-![alt text](https://github.com/dimastatz/video-streaming-analytics/blob/main/docs/chart-video-streaming.png)
-<br/>  
+![Video Streaming Analytics](https://github.com/dimastatz/video-streaming-analytics/blob/main/docs/chart-video-streaming.png)
+<br/> 
+
 
 ## Objectives
 The main objective of this project is to collect, analyze and report the following video KPIs
@@ -23,6 +24,9 @@ The solution is built on top of Apache Spark Streaming. Apache Kafka serves as a
 <br/>
 ![alt text](https://github.com/dimastatz/video-streaming-analytics/blob/0ec45b4eb3200fd7edbb32c5d09a538f863dce3b/docs/chart-spark-app.png)
 <br/>  
+On The  
+
+
 
 ### Data Normalization
 
