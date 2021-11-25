@@ -6,7 +6,7 @@ Video Streaming Platforms can differ from one to another. In the current project
 
 | ![Video Streaming Analytics](https://github.com/dimastatz/video-streaming-analytics/blob/main/docs/chart-video-streaming.png) |
 |:--:| 
-| *Diagram1: Video Streaming Analytics Flow* |
+| *Diagram1: Video Streaming Flow* |
 
 ## Objectives
 The main objective of this project is to collect, analyze and report the following video KPIs
@@ -21,11 +21,9 @@ The main objective of this project is to collect, analyze and report the followi
 
 ## Data Flow
 The solution is built on top of Apache Spark Streaming. Apache Kafka serves as a data source for Apache Spark Streaming. The processed data persisted to the File Sink in append-mode.  
-<br/>
-![alt text](https://github.com/dimastatz/video-streaming-analytics/blob/0ec45b4eb3200fd7edbb32c5d09a538f863dce3b/docs/chart-spark-app.png)
-<br/>  
-On The  
-
+| ![alt text](https://github.com/dimastatz/video-streaming-analytics/blob/0ec45b4eb3200fd7edbb32c5d09a538f863dce3b/docs/chart-spark-app.png) |
+| :--: |
+| *Diagram2: Video Analytics Flow* |  
 
 
 ### Data Normalization
