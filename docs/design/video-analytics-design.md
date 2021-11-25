@@ -18,10 +18,16 @@ The main objective of this project is to collect, analyze and report the followi
   - Device data - discover the OS, browsers, video players that are used by the audience 
   - Cdn QoS - the quality of service of the CDN.
 
-## Data Flow Diagram
-The project runs on top of Apache Spark Streaming. Apache Kafka serves as a data source for Apache Spark Streaming. The processed data persisted to the File Sink in append-mode.  
+## Data Flow
+The solution is built on top of Apache Spark Streaming. Apache Kafka serves as a data source for Apache Spark Streaming. The processed data persisted to the File Sink in append-mode.  
 <br/>
 ![alt text](https://github.com/dimastatz/video-streaming-analytics/blob/0ec45b4eb3200fd7edbb32c5d09a538f863dce3b/docs/chart-spark-app.png)
 <br/>  
 
-## 
+### Data Normalization
+
+### Data Enrichment
+
+### Data Aggregation
+
+
