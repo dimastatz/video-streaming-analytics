@@ -6,7 +6,7 @@ Video Streaming Platforms can differ from one to another. In the current project
 
 | ![Video Streaming Analytics](https://github.com/dimastatz/video-streaming-analytics/blob/main/docs/chart-video-streaming.png) |
 |:--:| 
-| *Diagram1: ### Video Streaming Analytics Flow* |
+| *Diagram1: Video Streaming Analytics Flow* |
 
 ## Objectives
 The main objective of this project is to collect, analyze and report the following video KPIs
