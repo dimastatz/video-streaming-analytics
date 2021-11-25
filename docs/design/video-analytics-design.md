@@ -27,8 +27,6 @@ The solution is built on top of Apache Spark Streaming. Apache Kafka serves as a
 | :--: |
 | *Diagram2: Video Analytics Flow* |  
   
-
-
 ### Data Normalization
 
 ### Data Enrichment
