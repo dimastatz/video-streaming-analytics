@@ -5,6 +5,7 @@ Video Streaming Analytics platforms help overcome streaming problems, understand
 Video Streaming Platforms can differ from one to another. In the current project, we create the Analytics for the Video Streaming platforms that have the following components in common: Video Processing, Media Packaging, Media Storage, and Video Distribution.  
 <br/>
 | ![Video Streaming Analytics](https://github.com/dimastatz/video-streaming-analytics/blob/main/docs/chart-video-streaming.png) |
+|:--:| 
 | *image_caption* |
 <br/> 
 
