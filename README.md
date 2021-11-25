@@ -31,6 +31,7 @@ The project runs on top of Apache Spark Streaming. Apache Kafka serves as a data
 <br/>
 ![alt text](https://github.com/dimastatz/video-streaming-analytics/blob/0ec45b4eb3200fd7edbb32c5d09a538f863dce3b/docs/chart-spark-app.png)
 <br/>  
+For more info view the design document here 
 
 ## How to use
 As a prerequisites you should install [docker desktop](https://docs.docker.com/desktop/) and [docker compose](https://docs.docker.com/compose/). Once docker software is installed, you can run 
