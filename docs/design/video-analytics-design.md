@@ -10,7 +10,6 @@ Consider a live event like an NBA game. The video is captured by cameras install
 Video Streaming Analytics platforms help overcome streaming problems, understand the audience better and optimize the viewer’s satisfaction by ensuring higher video streaming quality. 
 Video Streaming Platforms can differ from one to another. In the current project, we create the Analytics for the Video Streaming platforms that have the following components in common: Video Processing, Media Packaging, Media Storage, and Video Distribution.
 
-
 ## Objectives
 The main objective of this project is to collect, analyze and report the following video KPIs
   - Views - indicates how many times your video has been consumed
