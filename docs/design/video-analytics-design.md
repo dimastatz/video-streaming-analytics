@@ -1,12 +1,15 @@
 # Video Streaming Analytics Design Document
 
 ## Introduction
-Video Streaming Analytics platforms help overcome streaming problems, understand the audience better and optimize the viewer’s satisfaction by ensuring higher video streaming quality. 
-Video Streaming Platforms can differ from one to another. In the current project, we create the Analytics for the Video Streaming platforms that have the following components in common: Video Processing, Media Packaging, Media Storage, and Video Distribution.  
+Consider a live event like an NBA game. The video is captured by cameras installed on a Basketball Arena, and it makes its way to the user's OTT devices: TVs, computers, smartphones through the Live Video Streaming System. Live Video Streaming Systems implements such services as ingest, transcoding, packaging, distribution, server-side ad insertion, etc. Each service in Video Streaming System delivers logs to the Video Analytics.
 
 | ![Video Streaming Analytics](https://github.com/dimastatz/video-streaming-analytics/blob/main/docs/chart-video-streaming.png) |
 |:--:| 
 | *Diagram1: Video Streaming Flow* |
+
+Video Streaming Analytics platforms help overcome streaming problems, understand the audience better and optimize the viewer’s satisfaction by ensuring higher video streaming quality. 
+Video Streaming Platforms can differ from one to another. In the current project, we create the Analytics for the Video Streaming platforms that have the following components in common: Video Processing, Media Packaging, Media Storage, and Video Distribution.
+
 
 ## Objectives
 The main objective of this project is to collect, analyze and report the following video KPIs
@@ -20,8 +23,6 @@ The main objective of this project is to collect, analyze and report the followi
   - Cdn QoS - the quality of service of the CDN.
 
 ## Data Flow
-Consider a live event like an NBA game. The video is captured by cameras installed on a Basketball Arena, and it makes its way to the user's OTT devices: TVs, computers, smartphones through the Live Video Streaming System. Live Video Streaming Systems implements such services as ingest, transcoding, packaging, distribution, server-side ad insertion, etc. Each service in Video Streaming System delivers logs to the Video Analytics (follow red lines on the <em>Diagram1</em>)    
-
 The solution is built on top of Apache Spark Streaming. Apache Kafka serves as a data source for Apache Spark Streaming. The processed data persisted to the File Sink in append-mode.  
 | ![alt text](https://github.com/dimastatz/video-streaming-analytics/blob/0ec45b4eb3200fd7edbb32c5d09a538f863dce3b/docs/chart-spark-app.png) |
 | :--: |
