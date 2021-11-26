@@ -1,7 +1,7 @@
 # Video Streaming Analytics Design Document
 
 ## Introduction
-Consider a live event like an NBA game. The video is captured by cameras installed on a Basketball Arena, and it makes its way to the user's OTT devices: TVs, computers, smartphones through the Live Video Streaming System. Live Video Streaming Systems implements such services as ingest, transcoding, packaging, distribution, server-side ad insertion, etc. Each service in Video Streaming System delivers logs to the Video Analytics.
+Consider a live event like an NBA game. The video is captured by cameras installed on a Basketball Arena, and it makes its way to the viewer's OTT devices: TVs, computers, smartphones through the Live Video Streaming System. Live Video Streaming Systems implements such services as ingest, transcoding, packaging, distribution, server-side ad insertion, etc. Each service in Video Streaming System delivers logs to the Video Analytics.
 
 | ![Video Streaming Analytics](https://github.com/dimastatz/video-streaming-analytics/blob/main/docs/chart-video-streaming.png) |
 |:--:| 
@@ -22,11 +22,14 @@ The main objective of this project is to collect, analyze and report the followi
   - Cdn QoS - the quality of service of the CDN.
 
 ## Data Flow
-The solution is built on top of Apache Spark Streaming. Apache Kafka serves as a data source for Apache Spark Streaming. The processed data persisted to the File Sink in append-mode.  
+The Data Flow of Video Streaming Analytics starts in Apache Kafka. Every microservice of the Live Video Streaming System delivers logs to Apache Kafka. The delivery methods can be different. One of the well-known patterns for the logs delivery is to use such open-source log shippers as [fluentd](https://www.fluentd.org/) or [logstash](https://www.elastic.co/logstash/). In this scenario, microservices write their logs to the log files. Log shippers tail log files, read, filter, transform, and upload the needed data to the Apache Kafka server.
+Once data is available in Apache Kafka, Apache Spark Streaming takes the data and runs normalization, enrichment, and aggregation steps.
+
 | ![alt text](https://github.com/dimastatz/video-streaming-analytics/blob/0ec45b4eb3200fd7edbb32c5d09a538f863dce3b/docs/chart-spark-app.png) |
 | :--: |
 | *Diagram2: Video Analytics Flow* |  
-  
+
+
 ### Data Normalization
 
 ### Data Enrichment
