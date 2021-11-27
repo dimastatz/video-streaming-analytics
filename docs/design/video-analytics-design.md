@@ -31,7 +31,7 @@ Once data is available in Apache Kafka, Apache Spark Streaming takes the data an
 
 
 ### Data Normalization
-In Video Streaming Analytics we mainly focus on analyzing viewer experience. Since viewers consume the video data from CDN, the most important data sources for Video Streaming Analytics are CDN access log files. Video Streaming Systems can use different CDN Service providers simultaneously. Access log files format can differ from provider to provider. For example, see access log format for [EdgeCast](https://docs.edgecast.com/cdn/Content/RTLD/Log-Fields.htm), [Akamai](https://learn.akamai.com/en-us/webhelp/datastream/datastream-user-guide/GUID-56313AE3-C16F-4BCF-9D83-C26DE737F762.html) and [CloudFront](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/AccessLogs.html#access-logs-analyzing).  And this we have to normalize the incoming data first.     
+In Video Streaming Analytics we mainly focus on analyzing viewer experience. Since viewers consume the video data from CDN, the most important data sources for Video Streaming Analytics are CDN access log files. Video Streaming Systems can use different CDN Service providers simultaneously. Access log files format can differ from one CDN provider to another. For example, see access log formats for [EdgeCast](https://docs.edgecast.com/cdn/Content/RTLD/Log-Fields.htm), [Akamai](https://learn.akamai.com/en-us/webhelp/datastream/datastream-user-guide/GUID-56313AE3-C16F-4BCF-9D83-C26DE737F762.html) and [CloudFront](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/AccessLogs.html#access-logs-analyzing). All these formats are diffrent, and that's why we have to normalize the incoming data first.     
 
 ### Data Enrichment
 
