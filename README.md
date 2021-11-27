@@ -1,11 +1,14 @@
 # Video Streaming Analytics with Apache Spark
 
 ## Introduction
+Consider a live event like an NBA game. The video is captured by cameras installed on a Basketball Arena, and it makes its way to the viewer's OTT devices: TVs, computers, smartphones through the Live Video Streaming System. Live Video Streaming Systems implements such services as ingest, transcoding, packaging, distribution, server-side ad insertion, etc. Each service in Video Streaming System delivers logs to the Video Analytics.
+
+| ![Video Streaming Analytics](https://github.com/dimastatz/video-streaming-analytics/blob/main/docs/chart-video-streaming.png) |
+|:--:| 
+| *Diagram1: Video Streaming Flow* |
+
 Video Streaming Analytics platforms help overcome streaming problems, understand the audience better and optimize the viewer’s satisfaction by ensuring higher video streaming quality. 
-Video Streaming Platforms can differ from one to another. In the current project, we create the Analytics for the Video Streaming platforms that have the following components in common: Video Processing, Media Packaging, Media Storage, and Video Distribution.  
-<br/>
-![alt text](https://github.com/dimastatz/video-streaming-analytics/blob/main/docs/chart-video-streaming.png)
-<br/>  
+Video Streaming Platforms can differ from one to another. In the current project, we create the Analytics for the Video Streaming platforms that have the following components in common: Video Processing, Media Packaging, Media Storage, and Video Distribution.
 
 ## Objectives
 The main objective of this project is to create a reusable component that collects and analyzes video streaming data in real-time with the latency of 2 minutes. This project will produce the following KPIs:
@@ -28,9 +31,11 @@ The main languages of this project are Scala and Python.
 
 ## Design
 The project runs on top of Apache Spark Streaming. Apache Kafka serves as a data source for Apache Spark Streaming. The processed data is written to the File Sink by using Append Mode.  
-<br/>
-![alt text](https://github.com/dimastatz/video-streaming-analytics/blob/0ec45b4eb3200fd7edbb32c5d09a538f863dce3b/docs/chart-spark-app.png)
-<br/>  
+
+| ![alt text](https://github.com/dimastatz/video-streaming-analytics/blob/0ec45b4eb3200fd7edbb32c5d09a538f863dce3b/docs/chart-spark-app.png) |
+| :--: |
+| *Diagram2: Video Analytics Flow* |
+
 For more information, view the following design [document](https://github.com/dimastatz/video-streaming-analytics/blob/main/docs/design/video-analytics-design.md)
 
 
