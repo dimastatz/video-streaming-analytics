@@ -37,15 +37,18 @@ For more information, view the following design [document](https://github.com/di
 ## How to use
 As a prerequisites you should install [docker desktop](https://docs.docker.com/desktop/) and [docker compose](https://docs.docker.com/compose/). After installing the docker software, run 
 [docker-compose-process.yml](https://github.com/dimastatz/video-streaming-analytics/blob/946d90a124a4e8b8078dca347abb109ded971eef/docker-compose-process.yml). This docker-compose file starts Apache Kafka and Apache Spark Streaming containers. You can feed data the Apache Kafka to see how it works.
-In order to use consume this project from another Apache Spark application, you can build by using [sbt](https://www.scala-sbt.org/)
-
+In order to use consume this project from another Apache Spark application, you can build by using [sbt](https://www.scala-sbt.org/):
 ```bash
 mkdir video-analytics
 cd video-analytics
 git clone git@github.com:dimastatz/video-streaming-analytics.git
 cd video-streaming-analytics/data-process/processing/flumenz
-sbt assmembly
+sbt assembly
 ```
+The command [sbt assembly](https://github.com/sbt/sbt-assembly) builds uber jar, that can be deployed with other Apache Spark applications.
+ 
+
+
 
 
 
