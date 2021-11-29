@@ -74,4 +74,27 @@ object Extensions {
       }.getOrElse(Array(json))
     }
   }
+
+  implicit class RichDataFrame(df: DataFrame) {
+    def saltedJoin(buildDf: DataFrame, joinExpression: Column, joinType: String, salt: Int): DataFrame = {
+      import org.apache.spark.sql.functions._
+      val tmpDf = buildDf.withColumn("slt_range", array(Range(0, salt).toList.map(lit): _*))
+      val tableDf = tmpDf.withColumn("slt_ratio_s", explode(tmpDf("slt_range"))).drop("slt_range")
+
+      val streamDf = df.withColumn("slt_ratio", monotonically_increasing_id % salt)
+      val saltedExpr = streamDf("slt_ratio") === tableDf("slt_ratio_s") && joinExpression
+      streamDf.join(tableDf, saltedExpr, joinType).drop("slt_ratio_s").drop("slt_ratio")
+    }
+
+    def equalsTo(rightDf: DataFrame): Boolean = {
+      compareWith(rightDf)._1
+    }
+
+    def compareWith(rightDf: DataFrame): (Boolean, DataFrame, DataFrame) = {
+      val left = df.except(rightDf)
+      val right = rightDf.except(df)
+      (left.isEmpty && right.isEmpty, left, right)
+    }
+  }
+
 }
