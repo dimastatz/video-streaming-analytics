@@ -24,11 +24,6 @@ The main objective of this project is to collect, analyze and report the followi
   - Cdn QoS - the quality of service of the CDN.
 
 
-## Tech Stack
-The solution is developed on top of Apache Spark Streaming and can be used as a domain-specific add-on to Apache Spark Streaming.
-Another important aspect of this project is Cloud Nativeness. This project avoids Cloud Specific lockdowns, like dependency on managed services, proprietary software, etc. To achieve the `run anywere' ability, containerization is used widely. All needed tools, libs, code, and runtime engines are packaged into the docker containers. Docker-Compose is used to simulate the production environment.
-The main languages of this project are Scala and Python.
-
 ## Design
 The project runs on top of Apache Spark Streaming. Apache Kafka serves as a data source for Apache Spark Streaming. The processed data is written to the File Sink by using Append Mode.  
 
@@ -39,9 +34,9 @@ The project runs on top of Apache Spark Streaming. Apache Kafka serves as a data
 For more information, view the following design [document](https://github.com/dimastatz/video-streaming-analytics/blob/main/docs/design/video-analytics-design.md)
 
 
-## How to use
-As a prerequisites you should install [docker desktop](https://docs.docker.com/desktop/) and [docker compose](https://docs.docker.com/compose/). After installing the docker software, run 
-[docker-compose-process.yml](https://github.com/dimastatz/video-streaming-analytics/docker-compose-process.yml). This docker-compose file starts Apache Kafka and Apache Spark Streaming containers. You can feed data the Apache Kafka to see how it works.
+## How-To
+
+### Scala Project
 To consume this project from another Apache Spark application, you can build it by using [sbt](https://www.scala-sbt.org/):
 ```bash
 mkdir video-analytics
@@ -50,7 +45,14 @@ git clone git@github.com:dimastatz/video-streaming-analytics.git
 cd video-streaming-analytics/data-process/processing/flumenz
 sbt assembly
 ```
-The command [sbt assembly](https://github.com/sbt/sbt-assembly) builds an uber jar file that can be deployed with other Apache Spark applications.
+The command [sbt assembly](https://github.com/sbt/sbt-assembly) builds an [uber jar](https://stackoverflow.com/questions/11947037/what-is-an-uber-jar/11947093). Uber jar can be used from another Spark Application. 
+You can also try [sbt testCoverage](https://github.com/scoverage/sbt-scoverage) to run all unit tests at once. The code coverage of this project is above [90%](https://github.com/dimastatz/video-streaming-analytics/blob/main/data-process/processing/flumenz/build.sbt#L37), and you can examine almost everything from the unit tests.
+
+
+### Docker Compose
+As a prerequisites you should install [docker desktop](https://docs.docker.com/desktop/) and [docker compose](https://docs.docker.com/compose/). After installing the docker software, run 
+[docker-compose-process.yml](https://github.com/dimastatz/video-streaming-analytics/docker-compose-process.yml). This docker-compose file starts Apache Kafka and Apache Spark Streaming containers. You can feed data the Apache Kafka to see how it works.
+
 
 
 
