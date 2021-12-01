@@ -49,6 +49,7 @@ case class CdnLog(
 ```
 
 ### Data Enrichment
+Once a cdn event is normalized, we can enrich it by using additional data sources. For example, in order to analyze the geographical popularity of a video, we should translate viewer ip addresses to country and city. Another example is parsing user agent in order to discover the OS, browser, video players, etc.    
 
 ### Data Aggregation
 
