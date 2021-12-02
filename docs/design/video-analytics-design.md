@@ -37,10 +37,11 @@ In Video Streaming Analytics we mainly focus on analyzing viewer experience. Sin
 case class CdnLog(
     cdnType: String,
     cdnPop: String,
+    sourceIp: String,
+    userAgent: String,
     httpStatusCode: Int,
     httpLatency: Double,
     sessionId: String,
-    sourceIP: String,
     videoId: String,
     videoOwner: String,
     segmentId: String,
@@ -49,7 +50,7 @@ case class CdnLog(
 ```
 
 ### Data Enrichment
-Once a cdn event is normalized, we can enrich it by using additional data sources. For example, in order to analyze the geographical popularity of a video, we should translate viewer ip addresses to country and city. Another example is parsing user agent in order to discover the OS, browser, video players, etc.    
+Once CDN events are normalized, we can enrich them by using additional data sources. For example, to analyze the geographical popularity of the video, we should translate viewer IP addresses to country and city. Another example is parsing userAgent fields to discover the OS, browser, video players, etc.    
 
 ### Data Aggregation
 
