@@ -1,5 +1,7 @@
 package dimastatz.flumenz.models
 
+import java.sql.Timestamp
+
 case class CdnLog(
     cdnType: String,
     cdnPop: String,
@@ -9,5 +11,6 @@ case class CdnLog(
     videoId: String,
     videoOwner: String,
     segmentId: String,
-    profileId: String
+    profileId: String,
+    timestamp: Timestamp
 )

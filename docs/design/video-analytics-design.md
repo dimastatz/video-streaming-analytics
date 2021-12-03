@@ -35,17 +35,16 @@ In Video Streaming Analytics we mainly focus on analyzing viewer experience. Sin
 
 ```scala
 case class CdnLog(
-    cdnPop: String,
     cdnType: String,
-    sourceIp: String,
-    userAgent: String,
-    httpLatency: Double,
+    cdnPop: String,
     httpStatusCode: Int,
-    videoId: String,
+    httpLatency: Double,
     sessionId: String,
+    videoId: String,
+    videoOwner: String,
     segmentId: String,
     profileId: String,
-    videoOwner: String,
+    timestamp: Timestamp
 )
 ```
 
