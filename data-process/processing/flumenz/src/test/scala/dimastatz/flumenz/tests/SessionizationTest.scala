@@ -1,12 +1,13 @@
 package dimastatz.flumenz.tests
 
+import scala.util.Try
 import java.sql.Timestamp
-import dimastatz.flumenz.tests.utils._
-import org.scalatest.funsuite.AnyFunSuite
-import dimastatz.flumenz.sessions._
-import org.apache.spark.sql.functions._
-import org.apache.spark.sql.types.StructType
 import play.api.libs.json.Json
+import dimastatz.flumenz.sessions._
+import dimastatz.flumenz.tests.utils._
+import org.apache.spark.sql.functions._
+import org.scalatest.funsuite.AnyFunSuite
+import org.apache.spark.sql.types.StructType
 
 //noinspection SpellCheckingInspection
 class SessionizationTest extends AnyFunSuite with SparkTest {
@@ -16,11 +17,15 @@ class SessionizationTest extends AnyFunSuite with SparkTest {
 
   test("testSessionization") {
     val pipeline = new SessionPipeline(session, 1)
+    assert(pipeline.getName == "SessionsPipeline")
+    assert(pipeline.getPartitions.head == "close_dt")
 
     val ts = new Timestamp(System.currentTimeMillis() / 1000)
     val kafka = new KafkaStreamMock("cdnlogs", ts, getSession())
     val df = kafka.createStream()
+
     assert(df.isStreaming)
+    assert(Try(pipeline.query(df).count()).isFailure)
 
     import org.apache.spark.sql.catalyst.ScalaReflection
     val schema = ScalaReflection.schemaFor[Event].dataType.asInstanceOf[StructType]

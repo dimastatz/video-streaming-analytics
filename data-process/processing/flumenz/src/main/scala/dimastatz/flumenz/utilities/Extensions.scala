@@ -1,17 +1,13 @@
 package dimastatz.flumenz.utilities
 
+import scala.util.Try
 import java.sql.Timestamp
 import java.util.TimeZone
 import org.apache.spark.sql._
-
 import scala.io.BufferedSource
 import java.text.SimpleDateFormat
 import org.apache.spark.sql.types._
 import org.apache.commons.lang.StringEscapeUtils
-import org.apache.spark.sql.execution.streaming.MemoryStream
-import org.apache.spark.sql.functions.lit
-
-import scala.util.Try
 
 object Extensions {
   implicit class KafkaDataFrame(df: DataFrame) {
@@ -22,15 +18,6 @@ object Extensions {
         "CAST(value AS STRING)",
         "CAST(timestamp AS TIMESTAMP)"
       )
-    }
-  }
-
-  implicit class KafkaStream(stream: MemoryStream[String]) {
-    def toKafkaDataFrame(topic: String, dt: Timestamp): DataFrame = {
-      stream
-        .toDF()
-        .withColumn("topic", lit(topic))
-        .withColumn("timestamp", lit(dt))
     }
   }
 

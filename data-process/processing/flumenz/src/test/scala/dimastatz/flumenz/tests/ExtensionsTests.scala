@@ -51,4 +51,5 @@ class ExtensionsTests extends AnyFunSuite with SparkTest {
     assert(res1.count() == 0)
     assert(res1.equalsTo(res2))
   }
+
 }
