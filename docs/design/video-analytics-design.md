@@ -39,7 +39,6 @@ case class CdnLog(
     cdnPop: String,
     httpStatusCode: Int,
     httpLatency: Double,
-    sessionId: String,
     videoId: String,
     videoOwner: String,
     segmentId: String,
