@@ -21,7 +21,7 @@ Address the following aspects of System Design
     - Latency for ingest: 
         - Target 6s
         - LL HLS
-        = Frame by frame
+        - Frame by frame
         - Put to cache
         - Dasher (Slicer and Dasher on client side)
         - Out of scope (WebRTC)
