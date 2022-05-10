@@ -1,0 +1,46 @@
+version: '2'
+
+networks:
+  video-streaming-network:
+    driver: bridge
+
+services:
+
+  data-store-zookeeper:
+    image: 'bitnami/zookeeper:latest'
+    ports:
+      - '2181:2181'
+    networks:
+      - video-streaming-network
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+
+  data-store-kafka:
+    image: 'bitnami/kafka:latest'
+    networks:
+      - video-streaming-network
+    environment:
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=data-store-zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CLIENT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=CLIENT://:9092,EXTERNAL://:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=CLIENT://data-store-kafka:9092,EXTERNAL://localhost:9093
+      - KAFKA_INTER_BROKER_LISTENER_NAME=CLIENT
+      - KAFKA_LOG4J_LOGGERS="kafka.controller=INFO,kafka.producer.async.DefaultEventHandler=INFO,state.change.logger=INFO"
+    ports:
+      - '9092:9092'
+      - '9093:9093'
+
+  gateway:
+    build: ./gateway 
+    hostname: gateway
+    container_name: gateway
+    volumes:
+      - /tmp/video-ingest/e2e/:/tmp/kafka
+    networks:
+      - video-streaming-network
+    depends_on:
+      data-store-zookeeper:
+        condition: service_started
+      data-store-kafka:
+        condition: service_started
