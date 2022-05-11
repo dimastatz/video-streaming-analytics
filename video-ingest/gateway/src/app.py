@@ -14,7 +14,8 @@ def health():
         test_producer.close()
         return '<h1>Hello from Video Ingest</h2>'
     except Exception as e:
-        logging.error(f'Error creating Video Ingest {e}')
+        servers = os.environ.get('KAFKA_SERVERS', '')
+        logging.error(f'Error creating Video Ingest {e} {servers}')
         return 'Error creating Video Ingest'
 
 
@@ -28,7 +29,7 @@ def send_frame(beam_id, slice_id, frame_id):
         logging.error(f'Error sending frame {e}')
 
 
-def create_producer(servers=os.environ.get('kafka_servers', '')):
+def create_producer(servers=os.environ.get('KAFKA_SERVERS', '')):
     return KafkaProducer(bootstrap_servers=servers)
 
 
