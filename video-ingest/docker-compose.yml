@@ -1,11 +1,10 @@
 version: '2'
 
 networks:
-  video-streaming-network:
+  app-tier:
     driver: bridge
 
 services:
-  services:
   zookeeper:
     image: 'bitnami/zookeeper:latest'
     ports:
@@ -40,7 +39,7 @@ services:
     volumes:
       - /tmp/video-ingest/e2e/:/tmp/kafka
     networks:
-      - video-streaming-network
+      - app-tier
     environment:
       - KAFKA_SERVERS=kafka:9092
     ports:
