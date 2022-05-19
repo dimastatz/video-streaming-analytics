@@ -41,6 +41,7 @@ services:
     networks:
       - app-tier
     environment:
+      - ROLE=gateway
       - KAFKA_SERVERS=kafka:9092
     ports:
       - '8181:5000'

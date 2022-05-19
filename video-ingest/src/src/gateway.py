@@ -53,5 +53,9 @@ def create_topic(topic_name, servers=os.environ.get('KAFKA_SERVERS', '')):
     admin.close()
 
 
+def main():
+    app.run(debug=True)
+
+
 if __name__ == "__main__":
     app.run(debug=True)
