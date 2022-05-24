@@ -1,5 +1,5 @@
 from typing import List
-from origin import Origin
+from cdn_origin.origin import Origin
 
 class OriginSet:
     def __init__(self, origins: List[Origin]):

@@ -41,4 +41,3 @@ class TestOrigin(unittest.TestCase):
         assert(callback_finished == True)
         x.close()
 
-
