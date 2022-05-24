@@ -16,6 +16,9 @@ class TestOriginSet(unittest.TestCase):
     def test_tasks_success(self):
         x = OriginSet([Origin(self.upload_dummy_1), Origin(self.upload_dummy_2)])
         x.upload('dummy', b'some_data', 'type_a', 'info')
-        time.sleep(0.2)
+        assert(x.wait(0.05) == False)
+        assert(x.wait(0.09) == True)
+        assert(x.wait(0.01) == True)
         x.close()
-        assert(True)
+    
+
