@@ -17,5 +17,5 @@ class TestOriginSet(unittest.TestCase):
         x = OriginSet([Origin(self.upload_dummy_1), Origin(self.upload_dummy_2)])
         x.upload('dummy', b'some_data', 'type_a', 'info')
         time.sleep(0.2)
+        x.close()
         assert(True)
-        

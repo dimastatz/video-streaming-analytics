@@ -34,7 +34,7 @@ class TestOrigin(unittest.TestCase):
         assert(callback_finished == False)
         
         x.upload('dummy2', b'some_data', 'type_a', 'info')
-        time.sleep(0.1)
+        time.sleep(0.06)
         assert(callback_finished == False)
         
         time.sleep(0.1)

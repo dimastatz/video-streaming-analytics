@@ -12,4 +12,4 @@ class OriginSet:
         next(o.wait(timeout) for o in self.origins)
 
     def close(self):
-        [o.shutdown() for o in self.origins]
+        [o.close() for o in self.origins]
