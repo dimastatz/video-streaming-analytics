@@ -13,12 +13,12 @@ class TestOrigin(unittest.TestCase):
         x = Origin(self.upload_dummy)
         x.upload('dummy1', b'some_data', 'type_a', 'info')
         x.upload('dummy2', b'some_data', 'type_a', 'info')
-        
+    
         finished, running = x.wait(0.5)
         self.assertEqual(len(running), 2)
-        
         finished, running = x.wait(2)
         self.assertEqual(len(finished), 2)
+        x.close()
         
 
 
