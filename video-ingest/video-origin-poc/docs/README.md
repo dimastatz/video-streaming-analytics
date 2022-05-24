@@ -18,12 +18,17 @@ instances are expensive. Waiting for 4sec for IO is wasteful on such expensive m
 ## Fact and Observations
 | Fact / Observation                                             | Accuracy      | 
 |----------------------------------------------------------------|:-------------:|
-| The avg transcoding time is 4 sec                              | 80%          |
-| The avg uploading time is 4 sec                                | 80%          |
+| The avg transcoding time is 4 sec                              | 80%           |
+| The avg uploading time is 4 sec                                | 80%           |
 | Each transcoded slice is sent to multiple S3 buckets           | 80%           |
 | The storage waste is up to 100%                                | 50%           |
 
 
 ## Solution
+
+### Idea
 The idea is to separate IO and Compute Intensive tasks and achieve above 80% of utilization of GPU machines.
-The IO task will run on a Network Optimized Machines.  
+Specifically, we can deploy the uploading part of the encoder as Flask Application, and run it on a Network Optimized Machines.  
+
+### How to test
+Use Locust to test
