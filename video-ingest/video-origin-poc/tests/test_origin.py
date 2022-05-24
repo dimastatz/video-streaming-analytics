@@ -27,13 +27,18 @@ class TestOrigin(unittest.TestCase):
            callback_finished = True
 
         x = Origin(self.upload_dummy)
-        x.upload('dummy1', b'some_data', 'type_a', 'info')
-        time.sleep(0.11)
-        assert(callback_finished == False)
-
         x.add_all_done_callback(all_done_callback)
+
         x.upload('dummy1', b'some_data', 'type_a', 'info')
-        time.sleep(0.11)
+        time.sleep(0.05)
+        assert(callback_finished == False)
+        
+        x.upload('dummy2', b'some_data', 'type_a', 'info')
+        time.sleep(0.1)
+        assert(callback_finished == False)
+        
+        time.sleep(0.1)
         assert(callback_finished == True)
+        x.close()
 
 
